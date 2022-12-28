@@ -11,6 +11,19 @@
 		7008918E2959E0D7000B50F3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7008918D2959E0D7000B50F3 /* ContentView.swift */; };
 		700891902959E0DB000B50F3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7008918F2959E0DB000B50F3 /* Assets.xcassets */; };
 		700891932959E0DB000B50F3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 700891922959E0DB000B50F3 /* Preview Assets.xcassets */; };
+		700891A22959E1C6000B50F3 /* SwiftTwitch in Frameworks */ = {isa = PBXBuildFile; productRef = 700891A12959E1C6000B50F3 /* SwiftTwitch */; };
+		700891AB2959F71B000B50F3 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700891AA2959F71B000B50F3 /* AppViewModel.swift */; };
+		700891AE2959F823000B50F3 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700891AD2959F823000B50F3 /* KeychainHelper.swift */; };
+		700891B02959F92C000B50F3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700891AF2959F92C000B50F3 /* Constants.swift */; };
+		700891B32959FBB3000B50F3 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 700891B22959FBB3000B50F3 /* Alamofire */; };
+		700891B62959FBFD000B50F3 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 700891B52959FBFC000B50F3 /* SwiftyJSON */; };
+		700891BB2959FF6A000B50F3 /* LoadingElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700891BA2959FF6A000B50F3 /* LoadingElement.swift */; };
+		700891BF2959FFAA000B50F3 /* LogInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700891BD2959FFAA000B50F3 /* LogInView.swift */; };
+		700891C02959FFAA000B50F3 /* NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700891BE2959FFAA000B50F3 /* NavigationView.swift */; };
+		700891C2295A0599000B50F3 /* NavigationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700891C1295A0598000B50F3 /* NavigationViewModel.swift */; };
+		7093DB8A295B99D50088E0F3 /* IntFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7093DB89295B99D50088E0F3 /* IntFormatter.swift */; };
+		7093DB8C295BA3F20088E0F3 /* HoverWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7093DB8B295BA3F20088E0F3 /* HoverWrapper.swift */; };
+		7093DB8E295BB5BA0088E0F3 /* ChannelListElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7093DB8D295BB5BA0088E0F3 /* ChannelListElement.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +33,18 @@
 		7008918F2959E0DB000B50F3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		700891922959E0DB000B50F3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		700891942959E0DB000B50F3 /* SwiftyTwitch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SwiftyTwitch.entitlements; sourceTree = "<group>"; };
+		7008919E2959E155000B50F3 /* SwiftTwitch */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SwiftTwitch; path = ../../Downloads/SwiftTwitch; sourceTree = "<group>"; };
+		700891A62959E5BF000B50F3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		700891AA2959F71B000B50F3 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
+		700891AD2959F823000B50F3 /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
+		700891AF2959F92C000B50F3 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		700891BA2959FF6A000B50F3 /* LoadingElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingElement.swift; sourceTree = "<group>"; };
+		700891BD2959FFAA000B50F3 /* LogInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInView.swift; sourceTree = "<group>"; };
+		700891BE2959FFAA000B50F3 /* NavigationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
+		700891C1295A0598000B50F3 /* NavigationViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationViewModel.swift; sourceTree = "<group>"; };
+		7093DB89295B99D50088E0F3 /* IntFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntFormatter.swift; sourceTree = "<group>"; };
+		7093DB8B295BA3F20088E0F3 /* HoverWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoverWrapper.swift; sourceTree = "<group>"; };
+		7093DB8D295BB5BA0088E0F3 /* ChannelListElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelListElement.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -27,6 +52,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				700891B62959FBFD000B50F3 /* SwiftyJSON in Frameworks */,
+				700891A22959E1C6000B50F3 /* SwiftTwitch in Frameworks */,
+				700891B32959FBB3000B50F3 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -36,6 +64,7 @@
 		7008917F2959E0D7000B50F3 = {
 			isa = PBXGroup;
 			children = (
+				7008919D2959E155000B50F3 /* Packages */,
 				7008918A2959E0D7000B50F3 /* SwiftyTwitch */,
 				700891892959E0D7000B50F3 /* Products */,
 			);
@@ -52,6 +81,12 @@
 		7008918A2959E0D7000B50F3 /* SwiftyTwitch */ = {
 			isa = PBXGroup;
 			children = (
+				7093DB88295B99B00088E0F3 /* Utils */,
+				700891AC2959F817000B50F3 /* Helpers */,
+				700891A92959F6F2000B50F3 /* Models */,
+				700891A82959F6D6000B50F3 /* ViewModels */,
+				700891A72959F6D0000B50F3 /* Views */,
+				700891A62959E5BF000B50F3 /* Info.plist */,
 				7008918B2959E0D7000B50F3 /* SwiftyTwitchApp.swift */,
 				7008918D2959E0D7000B50F3 /* ContentView.swift */,
 				7008918F2959E0DB000B50F3 /* Assets.xcassets */,
@@ -67,6 +102,75 @@
 				700891922959E0DB000B50F3 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		7008919D2959E155000B50F3 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				7008919E2959E155000B50F3 /* SwiftTwitch */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		700891A72959F6D0000B50F3 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				700891B92959FF6A000B50F3 /* Elements */,
+				700891BC2959FFAA000B50F3 /* Shared */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		700891A82959F6D6000B50F3 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				700891AA2959F71B000B50F3 /* AppViewModel.swift */,
+				700891C1295A0598000B50F3 /* NavigationViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		700891A92959F6F2000B50F3 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				700891AF2959F92C000B50F3 /* Constants.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		700891AC2959F817000B50F3 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				700891AD2959F823000B50F3 /* KeychainHelper.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		700891B92959FF6A000B50F3 /* Elements */ = {
+			isa = PBXGroup;
+			children = (
+				700891BA2959FF6A000B50F3 /* LoadingElement.swift */,
+				7093DB8B295BA3F20088E0F3 /* HoverWrapper.swift */,
+				7093DB8D295BB5BA0088E0F3 /* ChannelListElement.swift */,
+			);
+			path = Elements;
+			sourceTree = "<group>";
+		};
+		700891BC2959FFAA000B50F3 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				700891BD2959FFAA000B50F3 /* LogInView.swift */,
+				700891BE2959FFAA000B50F3 /* NavigationView.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		7093DB88295B99B00088E0F3 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				7093DB89295B99D50088E0F3 /* IntFormatter.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -85,6 +189,11 @@
 			dependencies = (
 			);
 			name = SwiftyTwitch;
+			packageProductDependencies = (
+				700891A12959E1C6000B50F3 /* SwiftTwitch */,
+				700891B22959FBB3000B50F3 /* Alamofire */,
+				700891B52959FBFC000B50F3 /* SwiftyJSON */,
+			);
 			productName = SwiftyTwitch;
 			productReference = 700891882959E0D7000B50F3 /* SwiftyTwitch.app */;
 			productType = "com.apple.product-type.application";
@@ -113,6 +222,10 @@
 				Base,
 			);
 			mainGroup = 7008917F2959E0D7000B50F3;
+			packageReferences = (
+				700891B12959FBB3000B50F3 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				700891B42959FBFC000B50F3 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+			);
 			productRefGroup = 700891892959E0D7000B50F3 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -139,8 +252,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				700891C2295A0599000B50F3 /* NavigationViewModel.swift in Sources */,
+				700891B02959F92C000B50F3 /* Constants.swift in Sources */,
+				700891BF2959FFAA000B50F3 /* LogInView.swift in Sources */,
+				700891C02959FFAA000B50F3 /* NavigationView.swift in Sources */,
+				700891BB2959FF6A000B50F3 /* LoadingElement.swift in Sources */,
+				7093DB8E295BB5BA0088E0F3 /* ChannelListElement.swift in Sources */,
 				7008918E2959E0D7000B50F3 /* ContentView.swift in Sources */,
+				7093DB8A295B99D50088E0F3 /* IntFormatter.swift in Sources */,
+				7093DB8C295BA3F20088E0F3 /* HoverWrapper.swift in Sources */,
+				700891AE2959F823000B50F3 /* KeychainHelper.swift in Sources */,
 				7008918C2959E0D7000B50F3 /* SwiftyTwitchApp.swift in Sources */,
+				700891AB2959F71B000B50F3 /* AppViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,6 +397,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SwiftyTwitch/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -301,6 +425,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SwiftyTwitch/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -336,6 +461,42 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		700891B12959FBB3000B50F3 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		700891B42959FBFC000B50F3 /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		700891A12959E1C6000B50F3 /* SwiftTwitch */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SwiftTwitch;
+		};
+		700891B22959FBB3000B50F3 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 700891B12959FBB3000B50F3 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		700891B52959FBFC000B50F3 /* SwiftyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 700891B42959FBFC000B50F3 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			productName = SwiftyJSON;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 700891802959E0D7000B50F3 /* Project object */;
 }

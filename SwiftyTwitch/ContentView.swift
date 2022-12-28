@@ -8,14 +8,24 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var appVM: AppViewModel
+    var navVM = NavigationViewModel()
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+            switch appVM.authState {
+                case .none:
+                    LoadingElement()
+                case .loggedOut:
+                    LogInView()
+                case .loggedIn:
+                    NavigationView()
+                        .environmentObject(navVM)
+                case .error:
+                    LogInView()
+            }
+        }.onAppear() {
+            appVM.restoreLoginState()
         }
-        .padding()
     }
 }
 
