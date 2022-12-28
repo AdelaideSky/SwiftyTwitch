@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject var appVM: AppViewModel
     var navVM = NavigationViewModel()
+    @State var test: String = ""
     var body: some View {
         VStack {
             switch appVM.authState {
@@ -20,6 +21,19 @@ struct ContentView: View {
                 case .loggedIn:
                     NavigationView()
                         .environmentObject(navVM)
+                        .toolbar() {
+                            ToolbarItemGroup {
+                                Spacer()
+                                TextField("Search anything", text: $test)
+                                    .controlSize(.large)
+                                    .padding(8)
+                                    .frame(width: 250)
+                                    .background(RoundedRectangle(cornerRadius: 8)
+                                                                .stroke(Color.clear)
+                                                                .background(Color.black.opacity(0.2).cornerRadius(8)))
+                                    .textFieldStyle(PlainTextFieldStyle())
+                            }
+                        }
                 case .error:
                     LogInView()
             }

@@ -10,9 +10,10 @@ import SwiftUI
 
 struct ChannelListElement: View {
     var channels: [Follow]
+    
     var body: some View {
         ForEach(channels.filter({$0.streamData != nil}), id: \.userData) { channel in
-            NavigationLink(destination: ContentView(), label: {
+            NavigationLink(destination: ChannelView().environmentObject(ChannelViewModel(channel: channel)), label: {
                 HoverView { isHover in
                     HStack(alignment: .center) {
                         AsyncImage(url: channel.userData.profileImageURL, content: { image in
@@ -23,7 +24,11 @@ struct ChannelListElement: View {
                                 .frame(width: 30, height: 30)
                                 .cornerRadius(6)
                         }, placeholder: {
-                            Spacer().frame(width: 30, height: 30)
+                            ProgressView()
+                                .scaleEffect(0.4)
+                                .opacity(0.7)
+                                .padding()
+                                .frame(width: 30, height: 30)
                         })
                         if channel.streamData!.gameName != nil && channel.streamData!.gameName != "" {
                             VStack(alignment: .leading) {
@@ -73,7 +78,7 @@ struct ChannelListElement: View {
                                     .lineLimit(2)
                                     .fixedSize(horizontal: false, vertical: true)
                             }.padding(10)
-                                .frame(maxWidth: 200, maxHeight: 50)
+                                .frame(minWidth: 50, maxWidth: 200, maxHeight: 50)
                                 .interactiveDismissDisabled()
                             
                         }
@@ -82,7 +87,7 @@ struct ChannelListElement: View {
             })
         }
         ForEach(channels.filter({$0.streamData == nil}), id: \.userData) { channel in
-            NavigationLink(destination: ContentView(), label: {
+            NavigationLink(destination: ChannelView().environmentObject(ChannelViewModel(channel: channel)), label: {
                 HStack(alignment: .center) {
                     AsyncImage(url: channel.userData.profileImageURL, content: { image in
                         image

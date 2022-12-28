@@ -8,49 +8,35 @@
 import SwiftUI
 import SwiftTwitch
 
-public struct Follow {
-    var streamData: StreamData?
-    var userData: UserData
-}
-
 class NavigationViewModel: ObservableObject {
     
     @Published var followList: FollowList = FollowList(follows: [], total: 0)
+    @Published var topStreams: [Follow] = []
     @Published var status: RequestStatus = .none
-    @Published var loadOtherSubStatus: RequestStatus = .none
+    @Published var loadMoreFollowsStatus: RequestStatus = .none
+    @Published var loadTopStreamsStatus: RequestStatus = .none
+
     
     var nextPageToken: String? = nil
 
+}
 
-    
-    struct FollowList {
-        var follows: [Follow]
-        
-        /// `total` defines the token that displays the total number of streams from the
-        /// `Get Followed Streams` call.
-        var total: Int
-    }
-    
-    
-    enum RequestStatus: String, Error {
-        case none = "Nothing has happend yet... please do something"
-        case startedFetching = "Fetching subscriptions data"
-        case doneFetching = "Fetch was successful"
-        case error = "Unknown error"
-    }
+
+
+// MARK: - loadFollowList func
+
+
+extension NavigationViewModel {
     func loadFollowList(userID: String) {
         self.status = .startedFetching
         Twitch.Streams.getFollowedStreams(userID: userID, limit: 10) { result in
             switch result {
                 case .success(let getUsersFollowsData):
-                print(getUsersFollowsData)
                     for follow in getUsersFollowsData.streamData {
                         Twitch.Users.getUsers(userIds: [], userLoginNames: [follow.streamerLoginName]) { result in
                             switch result {
                                 case .success(let getUserData):
-                                    print(getUserData)
                                 self.followList.follows.append(Follow(streamData: follow, userData: getUserData.userData.first!))
-                                print(self.followList.follows)
                                 case .failure(let data,_ , let error):
                                     print(error ?? "error")
                                     print(String(data: data ?? Data(), encoding: .utf8))
@@ -58,31 +44,44 @@ class NavigationViewModel: ObservableObject {
                             }
                         }
                     }
-                Twitch.Users.getUsersFollows(followerId: userID, followedId: nil, first: 10) { result in
-                    switch result {
+                if getUsersFollowsData.streamData.count < 7 {
+                    Twitch.Users.getUsersFollows(followerId: userID, followedId: nil, first: 6-(getUsersFollowsData.streamData.count-1)) { result in
+                        switch result {
                         case .success(let getUserFollows):
-                            print(getUserFollows.total)
                             self.followList.total = getUserFollows.total
-                        for i in 0...(5-getUsersFollowsData.streamData.count) {
-                            if !getUsersFollowsData.streamData.contains(where: {$0.streamerId == getUserFollows.followData[i].followedUserId}) {
-                                Twitch.Users.getUsers(userIds: [getUserFollows.followData[i].followedUserId], userLoginNames: []) { result in
-                                    switch result {
+                            self.nextPageToken = getUserFollows.paginationData?.token
+                            for follow in getUserFollows.followData {
+                                if !getUsersFollowsData.streamData.contains(where: {$0.streamerId == follow.followedUserId}) {
+                                    Twitch.Users.getUsers(userIds: [follow.followedUserId], userLoginNames: []) { result in
+                                        switch result {
                                         case .success(let getUserData):
-                                            print(getUserData)
-                                        self.followList.follows.append(Follow(streamData: nil, userData: getUserData.userData.first!))
-                                        print(self.followList.follows)
+                                            if self.followList.follows.count < 7 {
+                                                self.followList.follows.append(Follow(streamData: nil, userData: getUserData.userData.first!))
+                                            }
                                         case .failure(let data,_ , let error):
                                             print(error ?? "error")
                                             print(String(data: data ?? Data(), encoding: .utf8))
                                             self.status = .error
+                                        }
                                     }
                                 }
                             }
-                        }
                         case .failure(let data,_ , let error):
                             print(error ?? "error")
                             print(String(data: data ?? Data(), encoding: .utf8))
                             self.status = .error
+                        }
+                    }
+                } else {
+                    Twitch.Users.getUsersFollows(followerId: userID, followedId: nil, first: 1) { result in
+                        switch result {
+                        case .success(let getUserFollows):
+                            self.followList.total = getUserFollows.total
+                        case .failure(let data,_ , let error):
+                            print(error ?? "error")
+                            print(String(data: data ?? Data(), encoding: .utf8))
+                            self.status = .error
+                        }
                     }
                 }
                     self.status = .doneFetching
@@ -94,11 +93,80 @@ class NavigationViewModel: ObservableObject {
         }
         
     }
-    func loadRemaingSubscriptions() {
-        
+}
+
+
+
+
+
+
+// MARK: - Load more/less follows funcs
+
+
+extension NavigationViewModel {
+    func loadMoreFollows(userID: String) {
+        self.loadMoreFollowsStatus = .startedFetching
+        Twitch.Users.getUsersFollows(followerId: userID, followedId: nil, after: nextPageToken, first: 12) { result in
+            switch result {
+                case .success(let getUserFollows):
+                    self.followList.total = getUserFollows.total
+                for follow in getUserFollows.followData {
+                    if !self.followList.follows.contains(where: {$0.userData.userId == follow.followedUserId}) {
+                        Twitch.Users.getUsers(userIds: [follow.followedUserId], userLoginNames: []) { result in
+                            switch result {
+                                case .success(let getUserData):
+                                self.nextPageToken = getUserFollows.paginationData?.token
+                                self.followList.follows.append(Follow(streamData: nil, userData: getUserData.userData.first!))
+                                case .failure(let data,_ , let error):
+                                    print(error ?? "error")
+                                    print(String(data: data ?? Data(), encoding: .utf8))
+                                    self.loadMoreFollowsStatus = .error
+                            }
+                        }
+                    }
+                }
+                self.loadMoreFollowsStatus = .doneFetching
+                case .failure(let data,_ , let error):
+                    print(error ?? "error")
+                    print(String(data: data ?? Data(), encoding: .utf8))
+                    self.loadMoreFollowsStatus = .error
+            }
+        }
     }
-    func showLessSubscriptions() {
-        self.loadOtherSubStatus = .none
+    func showLessFollows() {
+        self.followList.follows = Array(self.followList.follows.prefix(7))
     }
 }
 
+
+// MARK: - loadTopStreams func
+
+
+extension NavigationViewModel {
+    func loadTopStreams() {
+        self.loadTopStreamsStatus = .startedFetching
+        Twitch.Streams.getStreams(first: 7) { result in
+            switch result {
+            case .success(let getStreamsData):
+                for stream in getStreamsData.streamData {
+                    Twitch.Users.getUsers(userIds: [stream.streamerId], userLoginNames: []) { result in
+                        switch result {
+                        case .success(let getUserData):
+                            self.topStreams.append(Follow(streamData: stream, userData: getUserData.userData.first!))
+                        case .failure(let data,_ , let error):
+                            print(error ?? "error")
+                            print(String(data: data ?? Data(), encoding: .utf8))
+                            self.loadTopStreamsStatus = .error
+                        }
+                    }
+                }
+                self.loadTopStreamsStatus = .doneFetching
+            case .failure(let data,_ , let error):
+                print(error ?? "error")
+                print(String(data: data ?? Data(), encoding: .utf8))
+                self.loadTopStreamsStatus = .error
+            }
+                
+        }
+    }
+}

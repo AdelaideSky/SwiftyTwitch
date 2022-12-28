@@ -21,41 +21,107 @@ struct NavigationView: View {
                     Text("For you")
                         .font(.title2)
                         .fontWeight(.bold)
-                    HStack(alignment: .top) {
-                        Text("FOLLOWING")
-                            .font(.system(size: 10))
-                            .fontWeight(.bold)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        Button(action: {
-                            navigationVM.followList.follows = []
-                            navigationVM.loadFollowList(userID: appVM.userID)
-                        }, label: {
-                            Label("Refresh", systemImage: "arrow.clockwise").labelStyle(.iconOnly)
-                                .opacity(0.8)
+                    Group {
+                        HStack(alignment: .top) {
+                            Text("FOLLOWED CHANNELS")
                                 .font(.system(size: 10))
-                        }).buttonStyle(PlainButtonStyle())
+                                .fontWeight(.bold)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            Button(action: {
+                                navigationVM.followList.follows = []
+                                navigationVM.loadFollowList(userID: appVM.userID)
+                            }, label: {
+                                Label("Refresh", systemImage: "arrow.clockwise").labelStyle(.iconOnly)
+                                    .opacity(0.8)
+                                    .font(.system(size: 10))
+                            }).buttonStyle(PlainButtonStyle())
+                        }
+                        switch navigationVM.status {
+                            case .none:
+                                Spacer()
+                            case .startedFetching:
+                            HStack {
+                                Spacer()
+                                ProgressView().scaleEffect(0.5)
+                                Spacer()
+                            }
+                            case .error:
+                                Text("ERROR")
+                                    .font(.footnote)
+                                    .opacity(0.5)
+                        case .doneFetching:
+                            ChannelListElement(channels: navigationVM.followList.follows)
+                            switch navigationVM.loadMoreFollowsStatus {
+                            case .none:
+                                if navigationVM.followList.total > navigationVM.followList.follows.count {
+                                    Button(action: {
+                                        navigationVM.loadMoreFollows(userID: appVM.userID)
+                                    }, label: {
+                                        Label("Show more", systemImage: "chevron.down")
+                                    }).buttonStyle(PlainButtonStyle())
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                }
+                            case .startedFetching:
+                                HStack {
+                                    Spacer()
+                                    ProgressView().scaleEffect(0.5)
+                                    Spacer()
+                                }
+                            case .error:
+                                Text("ERROR")
+                                    .font(.footnote)
+                                    .opacity(0.5)
+                            case .doneFetching:
+                                HStack {
+                                    if navigationVM.followList.total > navigationVM.followList.follows.count {
+                                        Button(action: {
+                                            navigationVM.loadMoreFollows(userID: appVM.userID)
+                                        }, label: {
+                                            Label("Show more", systemImage: "chevron.down")
+                                        }).buttonStyle(PlainButtonStyle())
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                    }
+                                    Button(action: {
+                                        navigationVM.showLessFollows()
+                                    }, label: {
+                                        Label("Show less", systemImage: "chevron.up").labelStyle(.iconOnly)
+                                    }).buttonStyle(PlainButtonStyle())
+                                }
+                            }
+                            
+                        }
                     }
-                    switch navigationVM.status {
+                    Spacer()
+                    Group {
+                        HStack(alignment: .top) {
+                            Text("TOP STREAMS")
+                                .font(.system(size: 10))
+                                .fontWeight(.bold)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            Button(action: {
+                                navigationVM.topStreams = []
+                                navigationVM.loadTopStreams()
+                            }, label: {
+                                Label("Refresh", systemImage: "arrow.clockwise").labelStyle(.iconOnly)
+                                    .opacity(0.8)
+                                    .font(.system(size: 10))
+                            }).buttonStyle(PlainButtonStyle())
+                        }
+                        switch navigationVM.loadTopStreamsStatus {
                         case .none:
                             Spacer()
                         case .startedFetching:
-                        HStack {
-                            Spacer()
-                            ProgressView().scaleEffect(0.5)
-                            Spacer()
-                        }
+                            HStack {
+                                Spacer()
+                                ProgressView().scaleEffect(0.5)
+                                Spacer()
+                            }
                         case .error:
                             Text("ERROR")
                                 .font(.footnote)
                                 .opacity(0.5)
-                    case .doneFetching:
-                        ChannelListElement(channels: navigationVM.followList.follows)
-                        if navigationVM.followList.total > 10 {
-                            Button(action: {
-                                print("e")
-                            }, label: {
-                                Label("Show more", systemImage: "chevron.down")
-                            }).buttonStyle(PlainButtonStyle())
+                        case .doneFetching:
+                            ChannelListElement(channels: navigationVM.topStreams)
                         }
                     }
                 }
@@ -77,6 +143,7 @@ struct NavigationView: View {
             Text("zrgeht")
         }).onAppear() {
             navigationVM.loadFollowList(userID: appVM.userID)
+            navigationVM.loadTopStreams()
         }
     }
 }

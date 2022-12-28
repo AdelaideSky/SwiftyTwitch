@@ -21,6 +21,13 @@
 		700891BF2959FFAA000B50F3 /* LogInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700891BD2959FFAA000B50F3 /* LogInView.swift */; };
 		700891C02959FFAA000B50F3 /* NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700891BE2959FFAA000B50F3 /* NavigationView.swift */; };
 		700891C2295A0599000B50F3 /* NavigationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700891C1295A0598000B50F3 /* NavigationViewModel.swift */; };
+		70533887295C8CD400124795 /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70533886295C8CD400124795 /* VisualEffectView.swift */; };
+		70602D4F295C7FD000439DBE /* ChannelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70602D4E295C7FD000439DBE /* ChannelView.swift */; };
+		70602D51295C7FE500439DBE /* ChannelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70602D50295C7FE500439DBE /* ChannelViewModel.swift */; };
+		70602D53295C803B00439DBE /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70602D52295C803B00439DBE /* Enums.swift */; };
+		70602D56295C85EC00439DBE /* DominantColor in Frameworks */ = {isa = PBXBuildFile; productRef = 70602D55295C85EC00439DBE /* DominantColor */; };
+		70602D5B295C863000439DBE /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70602D5A295C863000439DBE /* Image.swift */; };
+		70602D5D295C86E600439DBE /* ColoredBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70602D5C295C86E600439DBE /* ColoredBackground.swift */; };
 		7093DB8A295B99D50088E0F3 /* IntFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7093DB89295B99D50088E0F3 /* IntFormatter.swift */; };
 		7093DB8C295BA3F20088E0F3 /* HoverWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7093DB8B295BA3F20088E0F3 /* HoverWrapper.swift */; };
 		7093DB8E295BB5BA0088E0F3 /* ChannelListElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7093DB8D295BB5BA0088E0F3 /* ChannelListElement.swift */; };
@@ -42,6 +49,12 @@
 		700891BD2959FFAA000B50F3 /* LogInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInView.swift; sourceTree = "<group>"; };
 		700891BE2959FFAA000B50F3 /* NavigationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
 		700891C1295A0598000B50F3 /* NavigationViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationViewModel.swift; sourceTree = "<group>"; };
+		70533886295C8CD400124795 /* VisualEffectView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
+		70602D4E295C7FD000439DBE /* ChannelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelView.swift; sourceTree = "<group>"; };
+		70602D50295C7FE500439DBE /* ChannelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelViewModel.swift; sourceTree = "<group>"; };
+		70602D52295C803B00439DBE /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
+		70602D5A295C863000439DBE /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
+		70602D5C295C86E600439DBE /* ColoredBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColoredBackground.swift; sourceTree = "<group>"; };
 		7093DB89295B99D50088E0F3 /* IntFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntFormatter.swift; sourceTree = "<group>"; };
 		7093DB8B295BA3F20088E0F3 /* HoverWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoverWrapper.swift; sourceTree = "<group>"; };
 		7093DB8D295BB5BA0088E0F3 /* ChannelListElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelListElement.swift; sourceTree = "<group>"; };
@@ -54,6 +67,7 @@
 			files = (
 				700891B62959FBFD000B50F3 /* SwiftyJSON in Frameworks */,
 				700891A22959E1C6000B50F3 /* SwiftTwitch in Frameworks */,
+				70602D56295C85EC00439DBE /* DominantColor in Frameworks */,
 				700891B32959FBB3000B50F3 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -115,6 +129,7 @@
 		700891A72959F6D0000B50F3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				70602D4D295C7FBE00439DBE /* ChannelView */,
 				700891B92959FF6A000B50F3 /* Elements */,
 				700891BC2959FFAA000B50F3 /* Shared */,
 			);
@@ -126,6 +141,7 @@
 			children = (
 				700891AA2959F71B000B50F3 /* AppViewModel.swift */,
 				700891C1295A0598000B50F3 /* NavigationViewModel.swift */,
+				70602D50295C7FE500439DBE /* ChannelViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -134,6 +150,7 @@
 			isa = PBXGroup;
 			children = (
 				700891AF2959F92C000B50F3 /* Constants.swift */,
+				70602D52295C803B00439DBE /* Enums.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -149,9 +166,11 @@
 		700891B92959FF6A000B50F3 /* Elements */ = {
 			isa = PBXGroup;
 			children = (
+				70533886295C8CD400124795 /* VisualEffectView.swift */,
 				700891BA2959FF6A000B50F3 /* LoadingElement.swift */,
 				7093DB8B295BA3F20088E0F3 /* HoverWrapper.swift */,
 				7093DB8D295BB5BA0088E0F3 /* ChannelListElement.swift */,
+				70602D5C295C86E600439DBE /* ColoredBackground.swift */,
 			);
 			path = Elements;
 			sourceTree = "<group>";
@@ -165,10 +184,19 @@
 			path = Shared;
 			sourceTree = "<group>";
 		};
+		70602D4D295C7FBE00439DBE /* ChannelView */ = {
+			isa = PBXGroup;
+			children = (
+				70602D4E295C7FD000439DBE /* ChannelView.swift */,
+			);
+			path = ChannelView;
+			sourceTree = "<group>";
+		};
 		7093DB88295B99B00088E0F3 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
 				7093DB89295B99D50088E0F3 /* IntFormatter.swift */,
+				70602D5A295C863000439DBE /* Image.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -193,6 +221,7 @@
 				700891A12959E1C6000B50F3 /* SwiftTwitch */,
 				700891B22959FBB3000B50F3 /* Alamofire */,
 				700891B52959FBFC000B50F3 /* SwiftyJSON */,
+				70602D55295C85EC00439DBE /* DominantColor */,
 			);
 			productName = SwiftyTwitch;
 			productReference = 700891882959E0D7000B50F3 /* SwiftyTwitch.app */;
@@ -225,6 +254,7 @@
 			packageReferences = (
 				700891B12959FBB3000B50F3 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				700891B42959FBFC000B50F3 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+				70602D54295C85EB00439DBE /* XCRemoteSwiftPackageReference "DominantColor" */,
 			);
 			productRefGroup = 700891892959E0D7000B50F3 /* Products */;
 			projectDirPath = "";
@@ -259,8 +289,14 @@
 				700891BB2959FF6A000B50F3 /* LoadingElement.swift in Sources */,
 				7093DB8E295BB5BA0088E0F3 /* ChannelListElement.swift in Sources */,
 				7008918E2959E0D7000B50F3 /* ContentView.swift in Sources */,
+				70602D53295C803B00439DBE /* Enums.swift in Sources */,
 				7093DB8A295B99D50088E0F3 /* IntFormatter.swift in Sources */,
+				70602D5D295C86E600439DBE /* ColoredBackground.swift in Sources */,
+				70602D5B295C863000439DBE /* Image.swift in Sources */,
+				70533887295C8CD400124795 /* VisualEffectView.swift in Sources */,
+				70602D51295C7FE500439DBE /* ChannelViewModel.swift in Sources */,
 				7093DB8C295BA3F20088E0F3 /* HoverWrapper.swift in Sources */,
+				70602D4F295C7FD000439DBE /* ChannelView.swift in Sources */,
 				700891AE2959F823000B50F3 /* KeychainHelper.swift in Sources */,
 				7008918C2959E0D7000B50F3 /* SwiftyTwitchApp.swift in Sources */,
 				700891AB2959F71B000B50F3 /* AppViewModel.swift in Sources */,
@@ -479,6 +515,14 @@
 				kind = branch;
 			};
 		};
+		70602D54295C85EB00439DBE /* XCRemoteSwiftPackageReference "DominantColor" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/indragiek/DominantColor";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -495,6 +539,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 700891B42959FBFC000B50F3 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
 			productName = SwiftyJSON;
+		};
+		70602D55295C85EC00439DBE /* DominantColor */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 70602D54295C85EB00439DBE /* XCRemoteSwiftPackageReference "DominantColor" */;
+			productName = DominantColor;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
