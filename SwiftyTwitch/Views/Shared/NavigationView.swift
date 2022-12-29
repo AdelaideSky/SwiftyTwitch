@@ -11,6 +11,9 @@ import SwiftUI
 struct NavigationView: View {
     @EnvironmentObject var appVM: AppViewModel
     @EnvironmentObject var navigationVM: NavigationViewModel
+    
+    let autoRefreshTimer = Timer.publish(every: 120, on: .main, in: .common).autoconnect()
+    
     var body: some View {
         NavigationSplitView(sidebar: {
             List {
@@ -144,6 +147,10 @@ struct NavigationView: View {
         }).onAppear() {
             navigationVM.loadFollowList(userID: appVM.userID)
             navigationVM.loadTopStreams()
+        }
+        .onReceive(autoRefreshTimer) { _ in
+            navigationVM.quietFollowRefresh(userID: appVM.userID)
+            navigationVM.quietTopStreamsRefresh()
         }
     }
 }

@@ -7,29 +7,42 @@
 
 import Foundation
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct ChannelListElement: View {
     var channels: [Follow]
     
+    
     var body: some View {
         ForEach(channels.filter({$0.streamData != nil}), id: \.userData) { channel in
-            NavigationLink(destination: ChannelView().environmentObject(ChannelViewModel(channel: channel)), label: {
+            ChannelListRowElement(channel: channel)
+        }
+        ForEach(channels.filter({$0.streamData == nil}), id: \.userData) { channel in
+            ChannelListRowElement(channel: channel)
+        }
+    }
+}
+
+struct ChannelListRowElement: View {
+    var channel: Follow
+    var channelVM: ChannelViewModel
+    
+    init(channel: Follow) {
+        self.channel = channel
+        self.channelVM = ChannelViewModel(channel: channel)
+    }
+
+    var body: some View {
+        if channel.streamData != nil {
+            NavigationLink(destination: ChannelView().environmentObject(channelVM), label: {
                 HoverView { isHover in
                     HStack(alignment: .center) {
-                        AsyncImage(url: channel.userData.profileImageURL, content: { image in
-                            image
-                                .interpolation(.high)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 30, height: 30)
-                                .cornerRadius(6)
-                        }, placeholder: {
-                            ProgressView()
-                                .scaleEffect(0.4)
-                                .opacity(0.7)
-                                .padding()
-                                .frame(width: 30, height: 30)
-                        })
+                        WebImage(url: channel.userData.profileImageURL)
+                            .interpolation(.high)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 30, height: 30)
+                            .cornerRadius(6)
                         if channel.streamData!.gameName != nil && channel.streamData!.gameName != "" {
                             VStack(alignment: .leading) {
                                 HStack() {
@@ -84,23 +97,30 @@ struct ChannelListElement: View {
                         }
                 }
                 
-            })
-        }
-        ForEach(channels.filter({$0.streamData == nil}), id: \.userData) { channel in
-            NavigationLink(destination: ChannelView().environmentObject(ChannelViewModel(channel: channel)), label: {
+            }).contextMenu() {
+                Button(action: {
+                    "https://twitch.tv/\(channel.userData.userLoginName)".copy()
+                }, label: {
+                    Label("Copy link to clipboard", systemImage: "doc.on.doc")
+                })
+                ShareLink(item: URL(string: "https://twitch.tv/\(channel.userData.userLoginName)")!)
+                Divider()
+                Button(action: {
+                    NSWorkspace.shared.open(URL(string: "https://twitch.tv/\(channel.userData.userLoginName)")!)
+                }, label: {
+                    Label("Open link", systemImage: "globe")
+                })
+            }
+        } else {
+            NavigationLink(destination: ChannelView().environmentObject(channelVM), label: {
                 HStack(alignment: .center) {
-                    AsyncImage(url: channel.userData.profileImageURL, content: { image in
-                        image
-                            .interpolation(.high)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 30, height: 30)
-                            .cornerRadius(6)
-                            .saturation(0)
-
-                    }, placeholder: {
-                        Spacer().frame(width: 30, height: 30)
-                    })
+                    WebImage(url: channel.userData.profileImageURL)
+                        .interpolation(.high)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 30, height: 30)
+                        .cornerRadius(6)
+                        .saturation(0)
 
                     Text(channel.userData.userDisplayName)
                         .font(.system(size: 15))
@@ -112,8 +132,20 @@ struct ChannelListElement: View {
 
                 }.frame(height: 30)
                     .padding(.vertical, 2.5)
-            })
-            
+            }).contextMenu() {
+                Button(action: {
+                    "https://twitch.tv/\(channel.userData.userLoginName)".copy()
+                }, label: {
+                    Label("Copy link to clipboard", systemImage: "doc.on.doc")
+                })
+                ShareLink(item: URL(string: "https://twitch.tv/\(channel.userData.userLoginName)")!)
+                Divider()
+                Button(action: {
+                    NSWorkspace.shared.open(URL(string: "https://twitch.tv/\(channel.userData.userLoginName)")!)
+                }, label: {
+                    Label("Open link", systemImage: "globe")
+                })
+            }
         }
     }
 }

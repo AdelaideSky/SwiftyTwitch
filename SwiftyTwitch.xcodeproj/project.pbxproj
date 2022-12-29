@@ -21,7 +21,15 @@
 		700891BF2959FFAA000B50F3 /* LogInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700891BD2959FFAA000B50F3 /* LogInView.swift */; };
 		700891C02959FFAA000B50F3 /* NavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700891BE2959FFAA000B50F3 /* NavigationView.swift */; };
 		700891C2295A0599000B50F3 /* NavigationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700891C1295A0598000B50F3 /* NavigationViewModel.swift */; };
+		70396653295CB93300FFE790 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70396652295CB93300FFE790 /* Date.swift */; };
+		70396655295CE82600FFE790 /* ClipsRowElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70396654295CE82600FFE790 /* ClipsRowElement.swift */; };
+		70396657295CEFB000FFE790 /* Clipboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70396656295CEFB000FFE790 /* Clipboard.swift */; };
+		70396659295D005800FFE790 /* Exclude.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70396658295D005800FFE790 /* Exclude.swift */; };
+		7039665B295D06E600FFE790 /* ChannelInfoBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7039665A295D06E600FFE790 /* ChannelInfoBarView.swift */; };
+		7039665D295D078100FFE790 /* ChannelHeaderPanelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7039665C295D078100FFE790 /* ChannelHeaderPanelsView.swift */; };
 		70533887295C8CD400124795 /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70533886295C8CD400124795 /* VisualEffectView.swift */; };
+		7053388A295CA51400124795 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 70533889295CA51400124795 /* SDWebImageSwiftUI */; };
+		7053388C295CB02D00124795 /* VideosRowElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7053388B295CB02D00124795 /* VideosRowElement.swift */; };
 		70602D4F295C7FD000439DBE /* ChannelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70602D4E295C7FD000439DBE /* ChannelView.swift */; };
 		70602D51295C7FE500439DBE /* ChannelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70602D50295C7FE500439DBE /* ChannelViewModel.swift */; };
 		70602D53295C803B00439DBE /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70602D52295C803B00439DBE /* Enums.swift */; };
@@ -49,7 +57,14 @@
 		700891BD2959FFAA000B50F3 /* LogInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInView.swift; sourceTree = "<group>"; };
 		700891BE2959FFAA000B50F3 /* NavigationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationView.swift; sourceTree = "<group>"; };
 		700891C1295A0598000B50F3 /* NavigationViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationViewModel.swift; sourceTree = "<group>"; };
+		70396652295CB93300FFE790 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		70396654295CE82600FFE790 /* ClipsRowElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipsRowElement.swift; sourceTree = "<group>"; };
+		70396656295CEFB000FFE790 /* Clipboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clipboard.swift; sourceTree = "<group>"; };
+		70396658295D005800FFE790 /* Exclude.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exclude.swift; sourceTree = "<group>"; };
+		7039665A295D06E600FFE790 /* ChannelInfoBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelInfoBarView.swift; sourceTree = "<group>"; };
+		7039665C295D078100FFE790 /* ChannelHeaderPanelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelHeaderPanelsView.swift; sourceTree = "<group>"; };
 		70533886295C8CD400124795 /* VisualEffectView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
+		7053388B295CB02D00124795 /* VideosRowElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideosRowElement.swift; sourceTree = "<group>"; };
 		70602D4E295C7FD000439DBE /* ChannelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelView.swift; sourceTree = "<group>"; };
 		70602D50295C7FE500439DBE /* ChannelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelViewModel.swift; sourceTree = "<group>"; };
 		70602D52295C803B00439DBE /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
@@ -65,6 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7053388A295CA51400124795 /* SDWebImageSwiftUI in Frameworks */,
 				700891B62959FBFD000B50F3 /* SwiftyJSON in Frameworks */,
 				700891A22959E1C6000B50F3 /* SwiftTwitch in Frameworks */,
 				70602D56295C85EC00439DBE /* DominantColor in Frameworks */,
@@ -171,6 +187,8 @@
 				7093DB8B295BA3F20088E0F3 /* HoverWrapper.swift */,
 				7093DB8D295BB5BA0088E0F3 /* ChannelListElement.swift */,
 				70602D5C295C86E600439DBE /* ColoredBackground.swift */,
+				7053388B295CB02D00124795 /* VideosRowElement.swift */,
+				70396654295CE82600FFE790 /* ClipsRowElement.swift */,
 			);
 			path = Elements;
 			sourceTree = "<group>";
@@ -188,6 +206,8 @@
 			isa = PBXGroup;
 			children = (
 				70602D4E295C7FD000439DBE /* ChannelView.swift */,
+				7039665A295D06E600FFE790 /* ChannelInfoBarView.swift */,
+				7039665C295D078100FFE790 /* ChannelHeaderPanelsView.swift */,
 			);
 			path = ChannelView;
 			sourceTree = "<group>";
@@ -197,6 +217,9 @@
 			children = (
 				7093DB89295B99D50088E0F3 /* IntFormatter.swift */,
 				70602D5A295C863000439DBE /* Image.swift */,
+				70396652295CB93300FFE790 /* Date.swift */,
+				70396656295CEFB000FFE790 /* Clipboard.swift */,
+				70396658295D005800FFE790 /* Exclude.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -222,6 +245,7 @@
 				700891B22959FBB3000B50F3 /* Alamofire */,
 				700891B52959FBFC000B50F3 /* SwiftyJSON */,
 				70602D55295C85EC00439DBE /* DominantColor */,
+				70533889295CA51400124795 /* SDWebImageSwiftUI */,
 			);
 			productName = SwiftyTwitch;
 			productReference = 700891882959E0D7000B50F3 /* SwiftyTwitch.app */;
@@ -255,6 +279,7 @@
 				700891B12959FBB3000B50F3 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				700891B42959FBFC000B50F3 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
 				70602D54295C85EB00439DBE /* XCRemoteSwiftPackageReference "DominantColor" */,
+				70533888295CA51400124795 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 			);
 			productRefGroup = 700891892959E0D7000B50F3 /* Products */;
 			projectDirPath = "";
@@ -282,6 +307,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7039665D295D078100FFE790 /* ChannelHeaderPanelsView.swift in Sources */,
 				700891C2295A0599000B50F3 /* NavigationViewModel.swift in Sources */,
 				700891B02959F92C000B50F3 /* Constants.swift in Sources */,
 				700891BF2959FFAA000B50F3 /* LogInView.swift in Sources */,
@@ -293,11 +319,17 @@
 				7093DB8A295B99D50088E0F3 /* IntFormatter.swift in Sources */,
 				70602D5D295C86E600439DBE /* ColoredBackground.swift in Sources */,
 				70602D5B295C863000439DBE /* Image.swift in Sources */,
+				70396653295CB93300FFE790 /* Date.swift in Sources */,
+				70396659295D005800FFE790 /* Exclude.swift in Sources */,
 				70533887295C8CD400124795 /* VisualEffectView.swift in Sources */,
 				70602D51295C7FE500439DBE /* ChannelViewModel.swift in Sources */,
 				7093DB8C295BA3F20088E0F3 /* HoverWrapper.swift in Sources */,
 				70602D4F295C7FD000439DBE /* ChannelView.swift in Sources */,
+				7039665B295D06E600FFE790 /* ChannelInfoBarView.swift in Sources */,
+				70396657295CEFB000FFE790 /* Clipboard.swift in Sources */,
+				70396655295CE82600FFE790 /* ClipsRowElement.swift in Sources */,
 				700891AE2959F823000B50F3 /* KeychainHelper.swift in Sources */,
+				7053388C295CB02D00124795 /* VideosRowElement.swift in Sources */,
 				7008918C2959E0D7000B50F3 /* SwiftyTwitchApp.swift in Sources */,
 				700891AB2959F71B000B50F3 /* AppViewModel.swift in Sources */,
 			);
@@ -515,6 +547,14 @@
 				kind = branch;
 			};
 		};
+		70533888295CA51400124795 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		70602D54295C85EB00439DBE /* XCRemoteSwiftPackageReference "DominantColor" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/indragiek/DominantColor";
@@ -539,6 +579,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 700891B42959FBFC000B50F3 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
 			productName = SwiftyJSON;
+		};
+		70533889295CA51400124795 /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 70533888295CA51400124795 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
 		};
 		70602D55295C85EC00439DBE /* DominantColor */ = {
 			isa = XCSwiftPackageProductDependency;

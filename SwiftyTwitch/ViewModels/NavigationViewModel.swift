@@ -16,9 +16,7 @@ class NavigationViewModel: ObservableObject {
     @Published var loadMoreFollowsStatus: RequestStatus = .none
     @Published var loadTopStreamsStatus: RequestStatus = .none
 
-    
     var nextPageToken: String? = nil
-
 }
 
 
@@ -29,7 +27,7 @@ class NavigationViewModel: ObservableObject {
 extension NavigationViewModel {
     func loadFollowList(userID: String) {
         self.status = .startedFetching
-        Twitch.Streams.getFollowedStreams(userID: userID, limit: 10) { result in
+        Twitch.Streams.getFollowedStreams(userID: userID, limit: 50) { result in
             switch result {
                 case .success(let getUsersFollowsData):
                     for follow in getUsersFollowsData.streamData {
@@ -66,6 +64,7 @@ extension NavigationViewModel {
                                     }
                                 }
                             }
+                            self.status = .doneFetching
                         case .failure(let data,_ , let error):
                             print(error ?? "error")
                             print(String(data: data ?? Data(), encoding: .utf8))
@@ -77,6 +76,7 @@ extension NavigationViewModel {
                         switch result {
                         case .success(let getUserFollows):
                             self.followList.total = getUserFollows.total
+                            self.status = .doneFetching
                         case .failure(let data,_ , let error):
                             print(error ?? "error")
                             print(String(data: data ?? Data(), encoding: .utf8))
@@ -84,7 +84,6 @@ extension NavigationViewModel {
                         }
                     }
                 }
-                    self.status = .doneFetching
                 case .failure(let data,_ , let error):
                     print(error ?? "error")
                     print(String(data: data ?? Data(), encoding: .utf8))
@@ -117,6 +116,9 @@ extension NavigationViewModel {
                                 case .success(let getUserData):
                                 self.nextPageToken = getUserFollows.paginationData?.token
                                 self.followList.follows.append(Follow(streamData: nil, userData: getUserData.userData.first!))
+                                if self.loadMoreFollowsStatus == .startedFetching {
+                                    self.loadMoreFollowsStatus = .doneFetching
+                                }
                                 case .failure(let data,_ , let error):
                                     print(error ?? "error")
                                     print(String(data: data ?? Data(), encoding: .utf8))
@@ -125,7 +127,7 @@ extension NavigationViewModel {
                         }
                     }
                 }
-                self.loadMoreFollowsStatus = .doneFetching
+                
                 case .failure(let data,_ , let error):
                     print(error ?? "error")
                     print(String(data: data ?? Data(), encoding: .utf8))
@@ -168,5 +170,72 @@ extension NavigationViewModel {
             }
                 
         }
+    }
+}
+
+
+
+// MARK: - quietFollowRefresh func
+
+
+extension NavigationViewModel {
+    func quietFollowRefresh(userID: String) {
+        Twitch.Streams.getFollowedStreams(userID: userID, limit: 50) { result in
+            switch result {
+                case .success(let getUsersFollowsData):
+                    for follow in getUsersFollowsData.streamData {
+                        Twitch.Users.getUsers(userIds: [], userLoginNames: [follow.streamerLoginName]) { result in
+                            switch result {
+                                case .success(let getUserData):
+                                if !self.followList.follows.contains(where: { $0 == Follow(streamData: follow, userData: getUserData.userData.first!) ? true : false}) {
+                                    if !self.followList.follows.contains(where: { $0.userData.userId == getUserData.userData.first!.userId ? true : false}) {
+                                        self.followList.follows[self.followList.follows.lastIndex(where: { $0.streamData == nil ? true : false})!] = Follow(streamData: follow, userData: getUserData.userData.first!)
+                                    } else {
+                                        self.followList.follows[self.followList.follows.firstIndex(where: { $0.userData.userId == getUserData.userData.first!.userId ? true : false})!] = Follow(streamData: follow, userData: getUserData.userData.first!)
+                                    }
+                                }
+                                case .failure(let data,_ , let error):
+                                    print(error ?? "error")
+                                    print(String(data: data ?? Data(), encoding: .utf8))
+                            }
+                        }
+                    }
+                case .failure(let data,_ , let error):
+                    print(error ?? "error")
+                    print(String(data: data ?? Data(), encoding: .utf8))
+                    self.status = .error
+            }
+        }
+        
+    }
+}
+
+
+// MARK: - quietTopStreamsRefresh func
+
+
+extension NavigationViewModel {
+    func quietTopStreamsRefresh() {
+        Twitch.Streams.getStreams(first: 7) { result in
+            switch result {
+            case .success(let getStreamsData):
+                for index in 0...6 {
+                    Twitch.Users.getUsers(userIds: [getStreamsData.streamData[index].streamerId], userLoginNames: []) { result in
+                        switch result {
+                        case .success(let getUserData):
+                            self.topStreams[index] = Follow(streamData: getStreamsData.streamData[index], userData: getUserData.userData.first!)
+                        case .failure(let data,_ , let error):
+                            print(error ?? "error")
+                            print(String(data: data ?? Data(), encoding: .utf8))
+                        }
+                    }
+                }
+            case .failure(let data,_ , let error):
+                print(error ?? "error")
+                print(String(data: data ?? Data(), encoding: .utf8))
+            }
+                
+        }
+        
     }
 }

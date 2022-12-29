@@ -20,7 +20,7 @@ struct SwiftyTwitchApp: App {
         Window("Twitch", id: "swiftyTwitch.main") {
             ContentView()
                 .environmentObject(AppViewModel())
-                .frame(minWidth: 500, minHeight: 300)
+                .frame(minWidth: 1100, minHeight: 500)
         }
     }
 }

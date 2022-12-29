@@ -23,7 +23,7 @@ struct FollowList {
     var total: Int
 }
 
-public struct Follow {
+public struct Follow: Hashable {
     var streamData: StreamData?
     var userData: UserData
 }

@@ -12,4 +12,6 @@ struct StorageStrings {
     static let accessToken = "com.adesky.SwiftyTwitch.auth.accessToken"
     static let userID = "com.adesky.SwiftyTwitch.user.id"
     static let userName = "com.adesky.SwiftyTwitch.user.name"
+    
+    static let navBarSortOrder = "com.adesky.SwiftyTwitch.view.navBarSortOrder"
 }
