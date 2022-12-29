@@ -147,7 +147,7 @@ extension NavigationViewModel {
 extension NavigationViewModel {
     func loadTopStreams() {
         self.loadTopStreamsStatus = .startedFetching
-        Twitch.Streams.getStreams(first: 7) { result in
+        Twitch.Streams.getStreams(first: 6) { result in
             switch result {
             case .success(let getStreamsData):
                 for stream in getStreamsData.streamData {
@@ -219,11 +219,13 @@ extension NavigationViewModel {
         Twitch.Streams.getStreams(first: 7) { result in
             switch result {
             case .success(let getStreamsData):
-                for index in 0...6 {
+                for index in 0...5 {
                     Twitch.Users.getUsers(userIds: [getStreamsData.streamData[index].streamerId], userLoginNames: []) { result in
                         switch result {
                         case .success(let getUserData):
-                            self.topStreams[index] = Follow(streamData: getStreamsData.streamData[index], userData: getUserData.userData.first!)
+                            if self.topStreams.count-1 <= index {
+                                self.topStreams[index] = Follow(streamData: getStreamsData.streamData[index], userData: getUserData.userData.first!)
+                            } else {print("skipped a topstream element")}
                         case .failure(let data,_ , let error):
                             print(error ?? "error")
                             print(String(data: data ?? Data(), encoding: .utf8))

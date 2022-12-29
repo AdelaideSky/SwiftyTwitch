@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import OAuthSwift
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: NSNotification) {

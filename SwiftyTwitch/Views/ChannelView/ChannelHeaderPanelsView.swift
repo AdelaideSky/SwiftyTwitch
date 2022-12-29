@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import AVKit
 
 struct ChannelHeaderPanelsView: View {
     @EnvironmentObject var channelVM: ChannelViewModel
@@ -15,16 +16,33 @@ struct ChannelHeaderPanelsView: View {
     var body: some View {
         if channelVM.channel.channelInfo.streamData != nil {
             HStack(spacing: 15) {
-                VStack {
-                    Text("is LIVE YEAH")
-                }.frame(width: 300, height: 280)
+                VStack(alignment: .leading) {
+                    RoundedRectangle(cornerRadius: 5)
+                        .fill(.red)
+                        .frame(width: 100, height: 25)
+                        .reverseMask() {
+                            Text("LIVE NOW !")
+                                .font(.title2)
+                                .bold()
+                        }
+                    Text("\(channelVM.channel.channelInfo.userData.userDisplayName) is streaming \(channelVM.channel.channelInfo.streamData!.gameName ?? "") !")
+                        .font(.title)
+                        .bold()
+                    Spacer()
+                    Text("Watch now among \(channelVM.channel.channelInfo.streamData!.viewerCount.customFormatted) viewers !")
+                        .font(.title3)
+                }.padding()
+                    .padding(.vertical, 20)
+                    .frame(width: 300, height: 280, alignment: .topLeading)
                     .background() {
                         RoundedRectangle(cornerRadius: 10)
                             .fill(.ultraThickMaterial)
                     }
                 VStack {
-                    Text("is LIVE YEAH")
-                }.frame(width: 500, height: 280)
+                    PlayerView()
+                        .environmentObject(PlayerViewModel(channel: channelVM.channel.channelInfo))
+                        .cornerRadius(10)
+                }.frame(width: 497, height: 280)
                     .background() {
                         RoundedRectangle(cornerRadius: 10)
                             .fill(.ultraThickMaterial)

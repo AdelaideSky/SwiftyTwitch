@@ -18,6 +18,7 @@ class ChannelViewModel: ObservableObject {
     
     @Published var lastClips: [ClipData] = []
     
+    
     struct Channel {
         var channelInfo: Follow
         var followerCount: Int

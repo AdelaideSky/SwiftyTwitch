@@ -27,3 +27,15 @@ public struct Follow: Hashable {
     var streamData: StreamData?
     var userData: UserData
 }
+
+enum StreamQuality: String {
+    case audio_only
+    case q_160p = "160p"
+    case q_360p = "360p"
+    case q_480p = "480p"
+    case q_720p = "720p"
+    case q_720p60 = "720p60"
+    case q_720p60_alt = "720p60_alt"
+    case q_1080p = "1080p"
+    case q_1080p60 = "1080p60"
+}

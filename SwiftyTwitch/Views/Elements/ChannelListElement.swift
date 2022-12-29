@@ -25,16 +25,14 @@ struct ChannelListElement: View {
 
 struct ChannelListRowElement: View {
     var channel: Follow
-    var channelVM: ChannelViewModel
     
     init(channel: Follow) {
         self.channel = channel
-        self.channelVM = ChannelViewModel(channel: channel)
     }
 
     var body: some View {
         if channel.streamData != nil {
-            NavigationLink(destination: ChannelView().environmentObject(channelVM), label: {
+            NavigationLink(destination: ChannelView().environmentObject(ChannelViewModel(channel: channel)), label: {
                 HoverView { isHover in
                     HStack(alignment: .center) {
                         WebImage(url: channel.userData.profileImageURL)
@@ -112,7 +110,7 @@ struct ChannelListRowElement: View {
                 })
             }
         } else {
-            NavigationLink(destination: ChannelView().environmentObject(channelVM), label: {
+            NavigationLink(destination: ChannelView().environmentObject(ChannelViewModel(channel: channel)), label: {
                 HStack(alignment: .center) {
                     WebImage(url: channel.userData.profileImageURL)
                         .interpolation(.high)
