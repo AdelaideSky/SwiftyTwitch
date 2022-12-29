@@ -28,7 +28,7 @@ public struct Follow: Hashable {
     var userData: UserData
 }
 
-enum StreamQuality: String {
+enum StreamQuality: String, CaseIterable {
     case audio_only
     case q_160p = "160p"
     case q_360p = "360p"

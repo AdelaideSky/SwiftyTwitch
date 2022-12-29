@@ -13,13 +13,13 @@ struct NavigationView: View {
     @EnvironmentObject var navigationVM: NavigationViewModel
     
     let autoRefreshTimer = Timer.publish(every: 120, on: .main, in: .common).autoconnect()
-    
     var body: some View {
         NavigationSplitView(sidebar: {
-            List {
+            List() {
                 NavigationLink(destination: ContentView()) {
                     Label("Home", systemImage: "house")
-                }.padding(.bottom, 10)
+                }
+                Spacer().frame(height: 10)
                 Group {
                     Text("For you")
                         .font(.title2)

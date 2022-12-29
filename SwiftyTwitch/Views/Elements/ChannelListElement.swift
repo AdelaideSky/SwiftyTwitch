@@ -10,20 +10,42 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct ChannelListElement: View {
+    @EnvironmentObject var appVM: AppViewModel
     var channels: [Follow]
     
     
     var body: some View {
+        
         ForEach(channels.filter({$0.streamData != nil}), id: \.userData) { channel in
             ChannelListRowElement(channel: channel)
+                .tag(channel)
         }
         ForEach(channels.filter({$0.streamData == nil}), id: \.userData) { channel in
             ChannelListRowElement(channel: channel)
+                .tag(channel)
+
         }
+    }
+}
+struct StreamLinkView: View {
+    @EnvironmentObject var appVM: AppViewModel
+    var channel: Follow
+    var body: some View {
+        StreamView()
+            .onChange(of: channel) { newValue in
+                if channel.userData.userId != newValue.userData.userId {
+                    print("refresh player")
+                    appVM.playStream(streamer: newValue)
+                }
+            }
+            .onAppear() {
+                appVM.playStream(streamer: channel)
+            }
     }
 }
 
 struct ChannelListRowElement: View {
+    @EnvironmentObject var appVM: AppViewModel
     var channel: Follow
     
     init(channel: Follow) {
@@ -32,17 +54,38 @@ struct ChannelListRowElement: View {
 
     var body: some View {
         if channel.streamData != nil {
-            NavigationLink(destination: ChannelView().environmentObject(ChannelViewModel(channel: channel)), label: {
-                HoverView { isHover in
-                    HStack(alignment: .center) {
-                        WebImage(url: channel.userData.profileImageURL)
-                            .interpolation(.high)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 30, height: 30)
-                            .cornerRadius(6)
-                        if channel.streamData!.gameName != nil && channel.streamData!.gameName != "" {
-                            VStack(alignment: .leading) {
+            NavigationLink(destination: {StreamLinkView(channel: channel)}) {
+                VStack {
+                    HoverView { isHover in
+                        HStack(alignment: .center) {
+                            WebImage(url: channel.userData.profileImageURL)
+                                .interpolation(.high)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 30, height: 30)
+                                .cornerRadius(6)
+                            if channel.streamData!.gameName != nil && channel.streamData!.gameName != "" {
+                                VStack(alignment: .leading) {
+                                    HStack() {
+                                        Text(channel.streamData!.streamerUserName)
+                                            .font(.system(size: 15))
+                                            .fontWeight(.semibold)
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                        HStack(spacing: 4) {
+                                            Image(systemName: "circle.fill")
+                                                .font(.system(size: 7))
+                                                .foregroundColor(.red)
+                                            Text("\(channel.streamData!.viewerCount.customFormatted)")
+                                                .font(.subheadline)
+                                        }.frame(minWidth: 40)
+                                    }
+                                    
+                                    Text(channel.streamData!.gameName ?? "nil")
+                                        .font(.subheadline)
+                                        .opacity(0.5)
+                                }
+                                
+                            } else {
                                 HStack() {
                                     Text(channel.streamData!.streamerUserName)
                                         .font(.system(size: 15))
@@ -56,46 +99,27 @@ struct ChannelListRowElement: View {
                                             .font(.subheadline)
                                     }.frame(minWidth: 40)
                                 }
+                            }
+                            
+                            
+                        }.frame(height: 30)
+                            .padding(.vertical, 2.5)
+                            .popover(isPresented: isHover, arrowEdge: Edge.trailing) {
+                                VStack {
+                                    Text(channel.streamData!.title)
+                                        .font(.system(size: 10))
+                                        .multilineTextAlignment(.leading)
+                                        .lineLimit(2)
+                                        .fixedSize(horizontal: false, vertical: true)
+                                }.padding(10)
+                                    .frame(minWidth: 50, maxWidth: 200, maxHeight: 50)
+                                    .interactiveDismissDisabled()
                                 
-                                Text(channel.streamData!.gameName ?? "nil")
-                                    .font(.subheadline)
-                                    .opacity(0.5)
                             }
-                            
-                        } else {
-                            HStack() {
-                                Text(channel.streamData!.streamerUserName)
-                                    .font(.system(size: 15))
-                                    .fontWeight(.semibold)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                HStack(spacing: 4) {
-                                    Image(systemName: "circle.fill")
-                                        .font(.system(size: 7))
-                                        .foregroundColor(.red)
-                                    Text("\(channel.streamData!.viewerCount.customFormatted)")
-                                        .font(.subheadline)
-                                }.frame(minWidth: 40)
-                            }
-                        }
-                        
-                        
-                    }.frame(height: 30)
-                        .padding(.vertical, 2.5)
-                        .popover(isPresented: isHover, arrowEdge: Edge.trailing) {
-                            VStack {
-                                Text(channel.streamData!.title)
-                                    .font(.system(size: 10))
-                                    .multilineTextAlignment(.leading)
-                                    .lineLimit(2)
-                                    .fixedSize(horizontal: false, vertical: true)
-                            }.padding(10)
-                                .frame(minWidth: 50, maxWidth: 200, maxHeight: 50)
-                                .interactiveDismissDisabled()
-                            
-                        }
+                    }
                 }
-                
-            }).contextMenu() {
+            }
+            .contextMenu() {
                 Button(action: {
                     "https://twitch.tv/\(channel.userData.userLoginName)".copy()
                 }, label: {

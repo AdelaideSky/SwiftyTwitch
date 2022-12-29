@@ -189,7 +189,12 @@ extension NavigationViewModel {
                                 case .success(let getUserData):
                                 if !self.followList.follows.contains(where: { $0 == Follow(streamData: follow, userData: getUserData.userData.first!) ? true : false}) {
                                     if !self.followList.follows.contains(where: { $0.userData.userId == getUserData.userData.first!.userId ? true : false}) {
-                                        self.followList.follows[self.followList.follows.lastIndex(where: { $0.streamData == nil ? true : false})!] = Follow(streamData: follow, userData: getUserData.userData.first!)
+                                        if let index = self.followList.follows.lastIndex(where: { $0.streamData == nil ? true : false}) {
+                                            self.followList.follows[index] = Follow(streamData: follow, userData: getUserData.userData.first!)
+                                        } else {
+                                            self.followList.follows.append(Follow(streamData: follow, userData: getUserData.userData.first!))
+                                        }
+                                        
                                     } else {
                                         self.followList.follows[self.followList.follows.firstIndex(where: { $0.userData.userId == getUserData.userData.first!.userId ? true : false})!] = Follow(streamData: follow, userData: getUserData.userData.first!)
                                     }
@@ -219,11 +224,11 @@ extension NavigationViewModel {
         Twitch.Streams.getStreams(first: 7) { result in
             switch result {
             case .success(let getStreamsData):
-                for index in 0...5 {
+                for index in 0...min(getStreamsData.streamData.count, 5) {
                     Twitch.Users.getUsers(userIds: [getStreamsData.streamData[index].streamerId], userLoginNames: []) { result in
                         switch result {
                         case .success(let getUserData):
-                            if self.topStreams.count-1 <= index {
+                            if self.topStreams.count-1 >= index {
                                 self.topStreams[index] = Follow(streamData: getStreamsData.streamData[index], userData: getUserData.userData.first!)
                             } else {print("skipped a topstream element")}
                         case .failure(let data,_ , let error):

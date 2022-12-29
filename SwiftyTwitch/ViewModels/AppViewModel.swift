@@ -21,6 +21,10 @@ class AppViewModel: ObservableObject {
     @Published var clientID: String = ""
     @Published var accessToken: String = ""
     
+    @Published var streamPlayer: PlayerViewModel? = nil
+    
+    @Published var navigationSelection: AnyHashable? = nil
+    
     private let keychain = KeychainSwift()
     
     enum authentificationState: String {
@@ -84,3 +88,9 @@ class AppViewModel: ObservableObject {
     }
 }
 
+extension AppViewModel {
+    func playStream(streamer: Follow) -> Bool {
+        self.streamPlayer = PlayerViewModel(channel: streamer)
+        return true
+    }
+}

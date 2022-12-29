@@ -10,6 +10,8 @@ import SwiftUI
 import SDWebImageSwiftUI
 struct ChannelView: View {
     @EnvironmentObject var channelVM: ChannelViewModel
+    @EnvironmentObject var appVM: AppViewModel
+
     @Environment(\.colorScheme) var colorScheme
     var body: some View {
         ScrollView(showsIndicators: false) {
