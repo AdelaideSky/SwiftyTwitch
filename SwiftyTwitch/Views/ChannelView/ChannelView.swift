@@ -7,107 +7,90 @@
 
 import Foundation
 import SwiftUI
-
+import SDWebImageSwiftUI
 struct ChannelView: View {
     @EnvironmentObject var channelVM: ChannelViewModel
-    
+    @Environment(\.colorScheme) var colorScheme
     var body: some View {
-        ZStack {
-            VStack(alignment: .leading) {
-                AsyncImage(url: channelVM.channel.channelInfo.userData.profileImageURL, content: { image in
-                    ColoredBackground(image: {
-                        HStack {
-                            image
-                                .resizable()
-                                .scaledToFill()
-                        }.asNSImage()
-                    }()).clipped()
-                        .frame(height: 338)
+        ScrollView(showsIndicators: false) {
+            ZStack {
+                VStack(alignment: .leading) {
+                    ZStack {
+                        AsyncImage(url: channelVM.channel.channelInfo.userData.profileImageURL, content: { image in
+                            ColoredBackground(image: {
+                                HStack {
+                                    image
+                                        .resizable()
+                                        .scaledToFill()
+                                }.asNSImage()
+                            }()).clipped()
+                                .frame(height: 450)
+                            
+                        }, placeholder: {
+                            Spacer()
+                                .frame(height: 450)
+                                .frame(maxWidth: .infinity)
+                        })
+                        ChannelHeaderPanelsView()
+                    }
                     
-                }, placeholder: {
-                    Spacer()
-                        .frame(height: 338)
-                        .frame(maxWidth: .infinity)
-                })
-                
-                ChannelInfoBarView()
-                Spacer().frame(maxHeight: .infinity)
-            }
-                
-            if channelVM.status == .startedFetching {
-                Rectangle().fill(.background)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                LoadingElement()
-            }
+                    VStack(alignment: .leading, spacing: 0) {
+                        ChannelInfoBarView()
+                        if channelVM.channel.channelInfo.userData.description != nil && !(channelVM.channel.channelInfo.userData.description ?? "").isEmpty {
+                            Text(channelVM.channel.channelInfo.userData.description ?? "")
+                                .font(.title3)
+                                .padding()
+                                .frame(minWidth: 100, maxWidth: 600, minHeight: 40, maxHeight: 120)
+                                .overlay(
+                                        RoundedRectangle(cornerRadius: 5)
+                                            .stroke(.separator, lineWidth: 1)
+                                        
+                                    )
+                                .background() {
+                                    RoundedRectangle(cornerRadius: 5)
+                                        .fill(.separator)
+                                        .opacity(0.2)
+                                }
+                                .fixedSize(horizontal: false, vertical: true)
 
+                                .padding(.leading, 40)
+                                .padding(.bottom, 20)
+                                .padding(.top, -20)
+                        }
+                    }
+                    if !channelVM.lastVideos.isEmpty {
+                        VideosRowElement("Recent broadcasts", videos: channelVM.lastVideos).padding(.bottom, 10)
+                    }
+                    if !channelVM.lastClips.isEmpty {
+                        ClipsRowElement(title: "Popular Clips", clips: channelVM.lastClips)
+                    }
+                    if channelVM.lastClips.isEmpty && channelVM.lastVideos.isEmpty {
+                        VStack {
+                            Image(systemName: "cup.and.saucer.fill")
+                                .font(.system(size: 40))
+                                .foregroundColor(.accentColor)
+                                .padding()
+                            Text("Hmmm... It's pretty empty here...")
+                                .font(.largeTitle)
+                            Text("Here, take this cup of coffee !")
+                                .font(.callout)
+                        }.opacity(0.8)
+                            .frame(maxWidth: .infinity)
+                            .padding(.top, 100)
+                            .padding(.bottom, 30)
+
+                    }
+                    Spacer().frame(maxHeight: .infinity)
+                }
+                    
+                if channelVM.status == .startedFetching {
+                    Rectangle().fill(.background)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    LoadingElement()
+                }
+
+            }
         }
     }
 }
 
-
-struct ChannelInfoBarView: View {
-    @EnvironmentObject var channelVM: ChannelViewModel
-    
-    var body: some View {
-        HStack(alignment: .top) {
-            AsyncImage(url: channelVM.channel.channelInfo.userData.profileImageURL, content: { image in
-                image
-                    .interpolation(.high)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 110, height: 110)
-                    .cornerRadius(6)
-                    .offset(y: -50)
-                    .shadow(radius: 5)
-                
-            }, placeholder: {
-                ProgressView()
-                    .scaleEffect(0.4)
-                    .opacity(0.7)
-                    .padding()
-                    .frame(width: 110, height: 110)
-                    .offset(y: -50)
-            })
-            VStack(alignment: .leading) {
-                HStack {
-                    Text(channelVM.channel.channelInfo.userData.userDisplayName)
-                        .font(.system(size: 28))
-                        .bold()
-                    if channelVM.channel.channelInfo.userData.broadcasterType == .partner {
-                        Image(systemName: "checkmark.seal.fill")
-                            .foregroundColor(.purple)
-                            .font(.system(size: 15))
-                            .offset(y: 2)
-                    }
-                }.padding(.bottom, 1)
-                Text("\(channelVM.channel.followerCount.customFormatted) followers")
-                    .font(.system(size: 13))
-                    .opacity(0.8)
-            }.padding(.leading, 10)
-            Spacer()
-            HStack {
-                Button(action: {
-                    
-                }, label: {
-                    Label("Follow", systemImage: "heart.fill").labelStyle(.iconOnly)
-                })
-                Button(action: {
-                    
-                }, label: {
-                    Label("Notifications", systemImage: "bell.fill").labelStyle(.iconOnly)
-                })
-                Button(action: {
-                    
-                }, label: {
-                    Label("Subscribe", systemImage: "star").labelStyle(.titleAndIcon)
-                })
-                Button(action: {
-                    
-                }, label: {
-                    Label("More", systemImage: "ellipsis").labelStyle(.iconOnly)
-                }).buttonStyle(.plain)
-            }.controlSize(.large)
-        }.padding(.leading, 40)
-            .padding(.trailing, 20)
-    }
-}
