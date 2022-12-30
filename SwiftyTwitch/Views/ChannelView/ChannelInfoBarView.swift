@@ -35,7 +35,7 @@ struct ChannelInfoBarView: View {
                         Image(systemName: "checkmark.seal.fill")
                             .foregroundColor(.purple)
                             .font(.system(size: 15))
-                            .offset(y: 2)
+                            .offset(y: -2)
                     }
                 }.padding(.bottom, 1)
                 Text("\(channelVM.channel.followerCount.customFormatted) followers")

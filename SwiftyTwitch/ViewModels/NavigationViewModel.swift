@@ -230,7 +230,7 @@ extension NavigationViewModel {
                         case .success(let getUserData):
                             if self.topStreams.count-1 >= index {
                                 self.topStreams[index] = Follow(streamData: getStreamsData.streamData[index], userData: getUserData.userData.first!)
-                            } else {print("skipped a topstream element")}
+                            } else {}
                         case .failure(let data,_ , let error):
                             print(error ?? "error")
                             print(String(data: data ?? Data(), encoding: .utf8))

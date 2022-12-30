@@ -14,6 +14,10 @@ import SwiftUI
 
 class PlayerViewModel: ObservableObject {
     
+    @Published var theaterMode: Bool = false
+    @Published var fullScreen: Bool = false
+    @Published var pictureInPicture: Bool = false
+    
     @Published var channel: Follow
     @Published var status: RequestStatus = .none
     

@@ -25,6 +25,9 @@ class AppViewModel: ObservableObject {
     
     @Published var navigationSelection: AnyHashable? = nil
     
+    @Published var pictureInPictureWindow: NSWindow? = nil
+    @Published var fullScreenWindow: NSWindow? = nil
+    
     private let keychain = KeychainSwift()
     
     enum authentificationState: String {
@@ -92,5 +95,19 @@ extension AppViewModel {
     func playStream(streamer: Follow) -> Bool {
         self.streamPlayer = PlayerViewModel(channel: streamer)
         return true
+    }
+    func stopPlaying() {
+        if self.pictureInPictureWindow != nil {
+            self.pictureInPictureWindow!.close()
+            if self.streamPlayer != nil {
+                self.streamPlayer!.pictureInPicture = false
+            }
+        }
+        if self.fullScreenWindow != nil {
+            self.fullScreenWindow!.close()
+            if self.streamPlayer != nil {
+                self.streamPlayer!.fullScreen = false
+            }
+        }
     }
 }

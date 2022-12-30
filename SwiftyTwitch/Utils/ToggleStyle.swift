@@ -17,16 +17,10 @@ struct MediaControlToggleStyle: ToggleStyle {
         return HStack {
             Image(systemName: configuration.isOn ? "pause.fill" : "play.fill")
                 .resizable()
-                .frame(width: 15, height: 15)
-                .foregroundColor(.white)
+                .frame(width: 14, height: 14)
                 .font(.system(size: 10, design: .default))
                 .opacity(0.8)
                 .onTapGesture {
-                    if configuration.isOn {
-                        player.pause()
-                    } else {
-                        player.play()
-                    }
                     configuration.isOn.toggle()
                 }
         }
@@ -34,16 +28,49 @@ struct MediaControlToggleStyle: ToggleStyle {
     }
 }
 
-struct SoundControlToggleStyle: ToggleStyle {
+struct TheaterModeToggleStyle: ToggleStyle {
  
     func makeBody(configuration: Self.Configuration) -> some View {
- 
         return HStack {
-            Image(systemName: configuration.isOn ? "speaker.slash.fill" : "speaker.wave.3.fill")
+            Image(systemName: "sidebar.trailing")
                 .resizable()
-                .frame(width: configuration.isOn ? 20 : 15, height: 15)
-                .foregroundColor(.white)
+                .frame(width: 20, height: 15)
                 .font(.system(size: 10, design: .default))
+                .foregroundColor(configuration.isOn ? .accentColor : .primary)
+                .onTapGesture {
+                    configuration.isOn.toggle()
+                }
+        }
+ 
+    }
+}
+struct PictureInPictureToggleStyle: ToggleStyle {
+ 
+    func makeBody(configuration: Self.Configuration) -> some View {
+        return HStack {
+            Image(systemName: configuration.isOn ? "rectangle.fill.on.rectangle.fill" : "rectangle.on.rectangle")
+                .resizable()
+                .frame(width: 18, height: 15)
+                .font(.system(size: 10, design: .default))
+                .onTapGesture {
+                    configuration.isOn.toggle()
+                }
+        }
+ 
+    }
+}
+
+struct FullScreenToggleStyle: ToggleStyle {
+ 
+    func makeBody(configuration: Self.Configuration) -> some View {
+        return HStack {
+            Image(systemName: configuration.isOn ? "arrow.down.right.and.arrow.up.left" : "arrow.up.left.and.arrow.down.right")
+                .resizable()
+                .frame(width: 15, height: 15)
+                .font(.system(size: 10, design: .default))
+                .onTapGesture {
+                    configuration.isOn.toggle()
+                }
         }
  
     }

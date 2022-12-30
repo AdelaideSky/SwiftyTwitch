@@ -41,6 +41,12 @@
 		70602D56295C85EC00439DBE /* DominantColor in Frameworks */ = {isa = PBXBuildFile; productRef = 70602D55295C85EC00439DBE /* DominantColor */; };
 		70602D5B295C863000439DBE /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70602D5A295C863000439DBE /* Image.swift */; };
 		70602D5D295C86E600439DBE /* ColoredBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70602D5C295C86E600439DBE /* ColoredBackground.swift */; };
+		70642DB7295F1C2B0095B813 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70642DB5295F1C2B0095B813 /* AVKit.framework */; };
+		70642DB8295F1C2B0095B813 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70642DB6295F1C2B0095B813 /* AVFoundation.framework */; };
+		70642DBB295F3D720095B813 /* Pipify in Frameworks */ = {isa = PBXBuildFile; productRef = 70642DBA295F3D720095B813 /* Pipify */; };
+		70642DBD295F42AC0095B813 /* PictureInPicture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70642DBC295F42AC0095B813 /* PictureInPicture.swift */; };
+		70642DBF295F6B800095B813 /* FullScreenPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70642DBE295F6B800095B813 /* FullScreenPlayer.swift */; };
+		70642DC1295F9E730095B813 /* isMouseHovering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70642DC0295F9E730095B813 /* isMouseHovering.swift */; };
 		7093DB8A295B99D50088E0F3 /* IntFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7093DB89295B99D50088E0F3 /* IntFormatter.swift */; };
 		7093DB8C295BA3F20088E0F3 /* HoverWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7093DB8B295BA3F20088E0F3 /* HoverWrapper.swift */; };
 		7093DB8E295BB5BA0088E0F3 /* ChannelListElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7093DB8D295BB5BA0088E0F3 /* ChannelListElement.swift */; };
@@ -80,6 +86,11 @@
 		70602D52295C803B00439DBE /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		70602D5A295C863000439DBE /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		70602D5C295C86E600439DBE /* ColoredBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColoredBackground.swift; sourceTree = "<group>"; };
+		70642DB5295F1C2B0095B813 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
+		70642DB6295F1C2B0095B813 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		70642DBC295F42AC0095B813 /* PictureInPicture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureInPicture.swift; sourceTree = "<group>"; };
+		70642DBE295F6B800095B813 /* FullScreenPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenPlayer.swift; sourceTree = "<group>"; };
+		70642DC0295F9E730095B813 /* isMouseHovering.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = isMouseHovering.swift; sourceTree = "<group>"; };
 		7093DB89295B99D50088E0F3 /* IntFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntFormatter.swift; sourceTree = "<group>"; };
 		7093DB8B295BA3F20088E0F3 /* HoverWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoverWrapper.swift; sourceTree = "<group>"; };
 		7093DB8D295BB5BA0088E0F3 /* ChannelListElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelListElement.swift; sourceTree = "<group>"; };
@@ -90,11 +101,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				70642DB7295F1C2B0095B813 /* AVKit.framework in Frameworks */,
+				70642DB8295F1C2B0095B813 /* AVFoundation.framework in Frameworks */,
 				7053388A295CA51400124795 /* SDWebImageSwiftUI in Frameworks */,
 				700891B62959FBFD000B50F3 /* SwiftyJSON in Frameworks */,
 				700891A22959E1C6000B50F3 /* SwiftTwitch in Frameworks */,
 				70602D56295C85EC00439DBE /* DominantColor in Frameworks */,
 				700891B32959FBB3000B50F3 /* Alamofire in Frameworks */,
+				70642DBB295F3D720095B813 /* Pipify in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,6 +121,7 @@
 				7008919D2959E155000B50F3 /* Packages */,
 				7008918A2959E0D7000B50F3 /* SwiftyTwitch */,
 				700891892959E0D7000B50F3 /* Products */,
+				70642DB4295F1C2A0095B813 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -234,6 +249,15 @@
 			path = ChannelView;
 			sourceTree = "<group>";
 		};
+		70642DB4295F1C2A0095B813 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				70642DB6295F1C2B0095B813 /* AVFoundation.framework */,
+				70642DB5295F1C2B0095B813 /* AVKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		7093DB88295B99B00088E0F3 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -243,6 +267,9 @@
 				70396656295CEFB000FFE790 /* Clipboard.swift */,
 				70396658295D005800FFE790 /* Exclude.swift */,
 				703B6D9C295E2724000AE236 /* ToggleStyle.swift */,
+				70642DBC295F42AC0095B813 /* PictureInPicture.swift */,
+				70642DBE295F6B800095B813 /* FullScreenPlayer.swift */,
+				70642DC0295F9E730095B813 /* isMouseHovering.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -269,6 +296,7 @@
 				700891B52959FBFC000B50F3 /* SwiftyJSON */,
 				70602D55295C85EC00439DBE /* DominantColor */,
 				70533889295CA51400124795 /* SDWebImageSwiftUI */,
+				70642DBA295F3D720095B813 /* Pipify */,
 			);
 			productName = SwiftyTwitch;
 			productReference = 700891882959E0D7000B50F3 /* SwiftyTwitch.app */;
@@ -303,6 +331,7 @@
 				700891B42959FBFC000B50F3 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
 				70602D54295C85EB00439DBE /* XCRemoteSwiftPackageReference "DominantColor" */,
 				70533888295CA51400124795 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
+				70642DB9295F3D720095B813 /* XCRemoteSwiftPackageReference "swiftui-pipify" */,
 			);
 			productRefGroup = 700891892959E0D7000B50F3 /* Products */;
 			projectDirPath = "";
@@ -347,12 +376,14 @@
 				70396659295D005800FFE790 /* Exclude.swift in Sources */,
 				70533887295C8CD400124795 /* VisualEffectView.swift in Sources */,
 				70602D51295C7FE500439DBE /* ChannelViewModel.swift in Sources */,
+				70642DBF295F6B800095B813 /* FullScreenPlayer.swift in Sources */,
 				703B6D9B295E2143000AE236 /* AVPlayer.swift in Sources */,
 				7093DB8C295BA3F20088E0F3 /* HoverWrapper.swift in Sources */,
 				703B6D94295DC951000AE236 /* PlayerViewModel.swift in Sources */,
 				703B6D96295DC9C2000AE236 /* PlayerView.swift in Sources */,
 				70602D4F295C7FD000439DBE /* ChannelView.swift in Sources */,
 				7039665B295D06E600FFE790 /* ChannelInfoBarView.swift in Sources */,
+				70642DC1295F9E730095B813 /* isMouseHovering.swift in Sources */,
 				70396657295CEFB000FFE790 /* Clipboard.swift in Sources */,
 				703B6D99295DD3E4000AE236 /* StreamView.swift in Sources */,
 				70396655295CE82600FFE790 /* ClipsRowElement.swift in Sources */,
@@ -360,6 +391,7 @@
 				7053388C295CB02D00124795 /* VideosRowElement.swift in Sources */,
 				7008918C2959E0D7000B50F3 /* SwiftyTwitchApp.swift in Sources */,
 				700891AB2959F71B000B50F3 /* AppViewModel.swift in Sources */,
+				70642DBD295F42AC0095B813 /* PictureInPicture.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -494,6 +526,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SwiftyTwitch/Info.plist;
+				INFOPLIST_KEY_LSUIElement = NO;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -522,6 +555,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SwiftyTwitch/Info.plist;
+				INFOPLIST_KEY_LSUIElement = NO;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -591,6 +625,14 @@
 				kind = branch;
 			};
 		};
+		70642DB9295F3D720095B813 /* XCRemoteSwiftPackageReference "swiftui-pipify" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/getsidetrack/swiftui-pipify?ref=iosexample.com";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.3.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -617,6 +659,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 70602D54295C85EB00439DBE /* XCRemoteSwiftPackageReference "DominantColor" */;
 			productName = DominantColor;
+		};
+		70642DBA295F3D720095B813 /* Pipify */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 70642DB9295F3D720095B813 /* XCRemoteSwiftPackageReference "swiftui-pipify" */;
+			productName = Pipify;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
