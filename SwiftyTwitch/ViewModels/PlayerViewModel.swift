@@ -28,6 +28,10 @@ class PlayerViewModel: ObservableObject {
     
     @Published var isPlaying: Bool = false
     
+    var refreshTimer: Timer? = nil
+    
+    var avassetDelegate: AVAssetDelegate = AVAssetDelegate()
+    
     struct Channel {
         var channelInfo: Follow
         var followerCount: Int
@@ -35,14 +39,57 @@ class PlayerViewModel: ObservableObject {
     
     init(channel: Follow) {
         self.channel = channel
+        self.refreshTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval(30), repeats: true, block: { _ in
+            print("refreshing...")
+            self.refreshData()
+        })
         Task {
             loadPlayer()
+            
+        }
+    }
+    //TODO: make custom AVAssetResourceLoaderDelegate to remove ads.
+    class AVAssetDelegate: NSObject, AVAssetResourceLoaderDelegate {
+        
+        func resourceLoader(_ resourceLoader: AVAssetResourceLoader, shouldWaitForLoadingOfRequestedResource loadingRequest: AVAssetResourceLoadingRequest) -> Bool {
+            let request: URLRequest = loadingRequest.request
+            let url: URL = request.url!
+//            let scheme: String = url.scheme!
+            
+//            if let _ = loadingRequest.contentInformationRequest {
+//                return handleContentInformationRequest(request: loadingRequest)
+//            } else if let _ = loadingRequest.dataRequest {
+//                return handleDataRequest(request: loadingRequest)
+//            } else {
+//                return false
+//            }
+             
+            return false
         }
     }
     
 }
 
-
+extension PlayerViewModel {
+    func refreshData() {
+        Twitch.Streams.getStreams(first: 1, userIds: [self.channel.userData.userId]) { result in
+            switch result {
+            case .success(let getStreamData):
+                if self.channel.streamData != getStreamData.streamData.first! {
+                    self.channel.streamData!.viewerCount = getStreamData.streamData.first!.viewerCount
+                    self.channel.streamData!.title = getStreamData.streamData.first!.title
+                    self.channel.streamData!.communityIds = getStreamData.streamData.first!.communityIds
+                    self.channel.streamData!.gameName = getStreamData.streamData.first!.gameName
+                    self.channel.streamData!.gameId = getStreamData.streamData.first!.gameId
+                }
+            case .failure(let data,_ , let error):
+                print(error ?? "error")
+                print(String(data: data ?? Data(), encoding: .utf8))
+            }
+            
+        }
+    }
+}
 
 extension PlayerViewModel {
     func loadStream() {
@@ -53,7 +100,9 @@ extension PlayerViewModel {
                     let json = try JSON(data: response.data!)
                     var answer: [StreamQuality:URL] = [:]
                     for quality in json["urls"].dictionaryValue.keys {
-                        answer[StreamQuality(rawValue: quality)!] = json["urls"][quality].url!
+                        // answer[StreamQuality(rawValue: quality)!] = URL(string: json["urls"][quality].stringValue.replacingOccurrences(of: "https", with: "twitchStream"))!
+                        answer[StreamQuality(rawValue: quality)!] = URL(string: json["urls"][quality].stringValue)!
+                        
                     }
                     self.streams = answer
                     print(self.streams)
@@ -67,10 +116,14 @@ extension PlayerViewModel {
     func loadPlayerItem() {
         if !self.streams.isEmpty {
             self.selectedStream = self.streams.keys.filter( {$0 != .audio_only && $0 != .q_160p && $0 != .q_360p} ).first!
-            self.player = AVPlayer(url: self.streams[selectedStream!]!)
+            var asset = AVURLAsset(url: self.streams[selectedStream!]!)
+            asset.resourceLoader.setDelegate(avassetDelegate, queue: .init(label: "swiftytwitch.streamDelegate"))
+            self.player = AVPlayer(playerItem: AVPlayerItem(asset: asset, automaticallyLoadedAssetKeys: ["availableMediaCharacteristicsWithMediaSelectionOptions"]))
+//            self.player = AVPlayer(url: self.streams[selectedStream!]!)
 //            self.player?.seek(to: CMTimeMakeWithSeconds(15.169, preferredTimescale: 60000))
             self.player?.play()
             self.isPlaying = true
+            
         }
     }
     func changeQuality() {
@@ -101,12 +154,37 @@ extension PlayerViewModel {
                     let json = try JSON(data: response.data!)
                     var answer: [StreamQuality:URL] = [:]
                     for quality in json["urls"].dictionaryValue.keys {
-                        answer[StreamQuality(rawValue: quality)!] = json["urls"][quality].url!
+                        //answer[StreamQuality(rawValue: quality)!] = URL(string: json["urls"][quality].stringValue.replacingOccurrences(of: "https", with: "twitchStream"))!
+                        answer[StreamQuality(rawValue: quality)!] = URL(string: json["urls"][quality].stringValue)!
                     }
                     self.streams = answer
                     self.loadPlayerItem()
                 } catch {print("error streams")}
             }
         }
+    }
+}
+
+extension PlayerViewModel {
+    //TODO: add tags - need to do a custom implementation in the 
+    func loadTags() {
+        var parameters: String
+        let request = AF.request("https://api.twitch.tv/helix/tags/streams", method: .get, parameters: ["url":""])
+        request.responseData() { response in
+            if response.data != nil {
+                do {
+                    let json = try JSON(data: response.data!)
+                    var answer: [StreamQuality:URL] = [:]
+                    for quality in json["urls"].dictionaryValue.keys {
+                        //answer[StreamQuality(rawValue: quality)!] = URL(string: json["urls"][quality].stringValue.replacingOccurrences(of: "https", with: "twitchStream"))!
+                        answer[StreamQuality(rawValue: quality)!] = URL(string: json["urls"][quality].stringValue)!
+                    }
+                    self.streams = answer
+                    self.loadPlayerItem()
+                } catch {print("error streams")}
+            }
+        }
+        TwitchTokenManager.shared.accessToken
+        
     }
 }

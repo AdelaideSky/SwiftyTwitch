@@ -26,6 +26,13 @@ struct FollowList {
 public struct Follow: Hashable {
     var streamData: StreamData?
     var userData: UserData
+    var tags: [Tag] = []
+}
+
+public struct Tag: Hashable {
+    var id: String
+    var name: String
+    var description: String
 }
 
 enum StreamQuality: String, CaseIterable {
@@ -34,6 +41,7 @@ enum StreamQuality: String, CaseIterable {
     case q_360p = "360p"
     case q_480p = "480p"
     case q_720p = "720p"
+    case q_720p_alt = "720p_alt"
     case q_720p60 = "720p60"
     case q_720p60_alt = "720p60_alt"
     case q_1080p = "1080p"
@@ -53,6 +61,8 @@ extension StreamQuality {
             return "480p"
         case .q_720p:
             return "720p"
+        case .q_720p_alt:
+            return "720p-alt"
         case .q_720p60:
             return "720p60"
         case .q_720p60_alt:

@@ -171,10 +171,10 @@ struct StreamView: View {
                             }.padding(.bottom, 1)
                             Text("\(appVM.streamPlayer!.channel.streamData!.title)")
                                 .font(.title3)
-                                .padding(.bottom, 5)
+                                .padding(.bottom, 2)
                             HStack {
                                 Text("\(appVM.streamPlayer!.channel.streamData!.gameName ?? "")")
-                                    .font(.subheadline)
+                                    .font(.headline)
                             }
                         }.padding(.leading, 10)
                         Spacer()
@@ -207,7 +207,7 @@ struct StreamView: View {
                                 Text("\(timeSinceStarted)")
                                     .onReceive(timeRefreshTimer) { _ in
                                         timeSinceStarted = appVM.streamPlayer!.channel.streamData!.startTime.timeAgoDetailDisplay
-                                    }.padding(.trailing, 3)
+                                    }.padding(.trailing, 5)
                                 ShareLink(item: URL(string: "https://twitch.tv/\(appVM.streamPlayer!.channel.userData.userLoginName)")!)
                                     .buttonStyle(.plain)
                                     .labelStyle(.iconOnly)

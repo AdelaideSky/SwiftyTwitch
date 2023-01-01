@@ -23,6 +23,8 @@ public struct HoverView<Content>: View where Content: View {
   /// Whether the view is clicked.
   @State public var clicked: Bool = false
   
+    @State var delayTimer: Timer? = nil
+    
   // MARK: - Public Properties
   
   /// The action to perform on click.
@@ -36,10 +38,16 @@ public struct HoverView<Content>: View where Content: View {
       content($hover, clicked).onHover {
           if $0 {
               if isDelayed {
-                  usleep(300000)
+                  hover = $0
+                  delayTimer = Timer(timeInterval: TimeInterval(1), repeats: false, block: { _ in
+                      if hover {
+                          onHover(true)
+                      }
+                  })
+              } else {
+                  hover = $0
+                  onHover($0)
               }
-              hover = $0
-              onHover($0)
           } else {
               hover = $0
               onHover($0)

@@ -83,15 +83,15 @@ struct PlayerOverlayView: View {
                                             Image(systemName: "checkmark.seal.fill")
                                                 .foregroundColor(.purple)
                                                 .font(.system(size: 15))
-                                                .offset(y: -2)
+                                                .offset(y: -1)
                                         }
                                     }.padding(.bottom, 0.5)
                                     Text("\(playerVM.channel.streamData!.title)")
                                         .font(.title3)
-                                        .padding(.bottom, 5)
+                                        .padding(.bottom, 2)
                                     HStack {
-                                        Text("\(playerVM.channel.streamData!.gameName ?? "")")
-                                            .font(.subheadline)
+                                        Text("\(playerVM.channel.streamData!.gameName!.isEmpty ? ("Plays "+(playerVM.channel.streamData!.gameName ?? "")) : "Streams") for \(playerVM.channel.streamData!.viewerCount) viewers")
+                                            .font(.headline)
                                     }
                                 }.padding(10)
                                 
@@ -122,6 +122,10 @@ struct PlayerOverlayView: View {
                             .keyboardShortcut(.space, modifiers: [])
                             .onChange(of: playerVM.isPlaying) { newValue in
                                 if newValue {
+                                    guard let livePosition = playerVM.player!.currentItem?.seekableTimeRanges.last as? CMTimeRange else {
+                                        return
+                                    }
+                                    playerVM.player!.seek(to: CMTimeRangeGetEnd(livePosition))
                                     playerVM.player!.play()
                                 } else {
                                     playerVM.player!.pause()
@@ -178,6 +182,11 @@ struct PlayerOverlayView: View {
                                 ForEach(Array(playerVM.streams.keys), id: \.self) { stream in
                                     Text(stream.rawValue).tag(stream as StreamQuality?)
                                 }
+                            }
+                            Divider()
+                            Button("Reload player") {
+                                playerVM.player = nil
+                                playerVM.loadPlayer()
                             }
                         } label: {
                             Image(systemName: "gear")
