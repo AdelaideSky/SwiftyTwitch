@@ -166,7 +166,7 @@ struct StreamView: View {
                                     Image(systemName: "checkmark.seal.fill")
                                         .foregroundColor(.purple)
                                         .font(.system(size: 15))
-                                        .offset(y: -2)
+                                        .offset(y: -1)
                                 }
                             }.padding(.bottom, 1)
                             Text("\(appVM.streamPlayer!.channel.streamData!.title)")
@@ -203,7 +203,10 @@ struct StreamView: View {
                                     }
                             }.padding(.bottom, 5)
                             HStack {
-                                Label("\(appVM.streamPlayer!.channel.streamData!.viewerCount.formatted())", systemImage: "person").padding(.trailing, 5)
+                                Label("\(appVM.streamPlayer!.channel.streamData!.viewerCount.formatted(.number))", systemImage: "person")
+                                    .animation(Animation.easeInOut(duration: 2), value: appVM.streamPlayer!.channel.streamData!.viewerCount)
+                                    .padding(.trailing, 5)
+                                
                                 Text("\(timeSinceStarted)")
                                     .onReceive(timeRefreshTimer) { _ in
                                         timeSinceStarted = appVM.streamPlayer!.channel.streamData!.startTime.timeAgoDetailDisplay
@@ -221,7 +224,7 @@ struct StreamView: View {
                     }.padding(.leading, 20)
                         .padding(.trailing, 20)
                     Spacer().frame(height: 200)
-                }
+                }.textSelection(.enabled)
             }
             
         }

@@ -15,3 +15,7 @@ struct StorageStrings {
     
     static let navBarSortOrder = "com.adesky.SwiftyTwitch.view.navBarSortOrder"
 }
+
+struct Constants {
+    static let apiURL = "http://127.0.0.1:5000"
+}

@@ -179,8 +179,8 @@ struct PlayerOverlayView: View {
                         
                         Menu {
                             Picker("Quality", selection: $playerVM.selectedStream) {
-                                ForEach(Array(playerVM.streams.keys), id: \.self) { stream in
-                                    Text(stream.rawValue).tag(stream as StreamQuality?)
+                                ForEach(Array(playerVM.streams.keys.sorted(by: { Int($0.rawValue.filter("0123456789".contains)) ?? 0 > Int($1.rawValue.filter("0123456789".contains)) ?? 0 })), id: \.self) { stream in
+                                    Text(stream.formatted).tag(stream as StreamQuality?)
                                 }
                             }
                             Divider()

@@ -47,6 +47,12 @@
 		70642DBD295F42AC0095B813 /* PictureInPicture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70642DBC295F42AC0095B813 /* PictureInPicture.swift */; };
 		70642DBF295F6B800095B813 /* FullScreenPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70642DBE295F6B800095B813 /* FullScreenPlayer.swift */; };
 		70642DC1295F9E730095B813 /* isMouseHovering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70642DC0295F9E730095B813 /* isMouseHovering.swift */; };
+		7092D8E62963491B00518F0F /* NowPlayableMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7092D8E22963491B00518F0F /* NowPlayableMetadata.swift */; };
+		7092D8E72963491B00518F0F /* NowPlayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7092D8E32963491B00518F0F /* NowPlayable.swift */; };
+		7092D8E82963491B00518F0F /* NowPlayableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7092D8E42963491B00518F0F /* NowPlayableError.swift */; };
+		7092D8E92963491B00518F0F /* NowPlayableCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7092D8E52963491B00518F0F /* NowPlayableCommand.swift */; };
+		7092D8EB29634A8B00518F0F /* StreamNowPlayableBehaviour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7092D8EA29634A8B00518F0F /* StreamNowPlayableBehaviour.swift */; };
+		7092D8ED2963600500518F0F /* NumberAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7092D8EC2963600500518F0F /* NumberAnimation.swift */; };
 		7093DB8A295B99D50088E0F3 /* IntFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7093DB89295B99D50088E0F3 /* IntFormatter.swift */; };
 		7093DB8C295BA3F20088E0F3 /* HoverWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7093DB8B295BA3F20088E0F3 /* HoverWrapper.swift */; };
 		7093DB8E295BB5BA0088E0F3 /* ChannelListElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7093DB8D295BB5BA0088E0F3 /* ChannelListElement.swift */; };
@@ -91,6 +97,12 @@
 		70642DBC295F42AC0095B813 /* PictureInPicture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureInPicture.swift; sourceTree = "<group>"; };
 		70642DBE295F6B800095B813 /* FullScreenPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenPlayer.swift; sourceTree = "<group>"; };
 		70642DC0295F9E730095B813 /* isMouseHovering.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = isMouseHovering.swift; sourceTree = "<group>"; };
+		7092D8E22963491B00518F0F /* NowPlayableMetadata.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NowPlayableMetadata.swift; sourceTree = "<group>"; };
+		7092D8E32963491B00518F0F /* NowPlayable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NowPlayable.swift; sourceTree = "<group>"; };
+		7092D8E42963491B00518F0F /* NowPlayableError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NowPlayableError.swift; sourceTree = "<group>"; };
+		7092D8E52963491B00518F0F /* NowPlayableCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NowPlayableCommand.swift; sourceTree = "<group>"; };
+		7092D8EA29634A8B00518F0F /* StreamNowPlayableBehaviour.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamNowPlayableBehaviour.swift; sourceTree = "<group>"; };
+		7092D8EC2963600500518F0F /* NumberAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberAnimation.swift; sourceTree = "<group>"; };
 		7093DB89295B99D50088E0F3 /* IntFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntFormatter.swift; sourceTree = "<group>"; };
 		7093DB8B295BA3F20088E0F3 /* HoverWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoverWrapper.swift; sourceTree = "<group>"; };
 		7093DB8D295BB5BA0088E0F3 /* ChannelListElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelListElement.swift; sourceTree = "<group>"; };
@@ -258,9 +270,22 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		7092D8E12963491B00518F0F /* NowPlayable */ = {
+			isa = PBXGroup;
+			children = (
+				7092D8E22963491B00518F0F /* NowPlayableMetadata.swift */,
+				7092D8E32963491B00518F0F /* NowPlayable.swift */,
+				7092D8E42963491B00518F0F /* NowPlayableError.swift */,
+				7092D8E52963491B00518F0F /* NowPlayableCommand.swift */,
+				7092D8EA29634A8B00518F0F /* StreamNowPlayableBehaviour.swift */,
+			);
+			path = NowPlayable;
+			sourceTree = "<group>";
+		};
 		7093DB88295B99B00088E0F3 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				7092D8E12963491B00518F0F /* NowPlayable */,
 				7093DB89295B99D50088E0F3 /* IntFormatter.swift */,
 				70602D5A295C863000439DBE /* Image.swift */,
 				70396652295CB93300FFE790 /* Date.swift */,
@@ -270,6 +295,7 @@
 				70642DBC295F42AC0095B813 /* PictureInPicture.swift */,
 				70642DBE295F6B800095B813 /* FullScreenPlayer.swift */,
 				70642DC0295F9E730095B813 /* isMouseHovering.swift */,
+				7092D8EC2963600500518F0F /* NumberAnimation.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -361,6 +387,7 @@
 			files = (
 				7039665D295D078100FFE790 /* ChannelHeaderPanelsView.swift in Sources */,
 				703B6D9D295E2724000AE236 /* ToggleStyle.swift in Sources */,
+				7092D8ED2963600500518F0F /* NumberAnimation.swift in Sources */,
 				700891C2295A0599000B50F3 /* NavigationViewModel.swift in Sources */,
 				700891B02959F92C000B50F3 /* Constants.swift in Sources */,
 				700891BF2959FFAA000B50F3 /* LogInView.swift in Sources */,
@@ -369,7 +396,9 @@
 				7093DB8E295BB5BA0088E0F3 /* ChannelListElement.swift in Sources */,
 				7008918E2959E0D7000B50F3 /* ContentView.swift in Sources */,
 				70602D53295C803B00439DBE /* Enums.swift in Sources */,
+				7092D8EB29634A8B00518F0F /* StreamNowPlayableBehaviour.swift in Sources */,
 				7093DB8A295B99D50088E0F3 /* IntFormatter.swift in Sources */,
+				7092D8E62963491B00518F0F /* NowPlayableMetadata.swift in Sources */,
 				70602D5D295C86E600439DBE /* ColoredBackground.swift in Sources */,
 				70602D5B295C863000439DBE /* Image.swift in Sources */,
 				70396653295CB93300FFE790 /* Date.swift in Sources */,
@@ -383,13 +412,16 @@
 				703B6D96295DC9C2000AE236 /* PlayerView.swift in Sources */,
 				70602D4F295C7FD000439DBE /* ChannelView.swift in Sources */,
 				7039665B295D06E600FFE790 /* ChannelInfoBarView.swift in Sources */,
+				7092D8E82963491B00518F0F /* NowPlayableError.swift in Sources */,
 				70642DC1295F9E730095B813 /* isMouseHovering.swift in Sources */,
+				7092D8E92963491B00518F0F /* NowPlayableCommand.swift in Sources */,
 				70396657295CEFB000FFE790 /* Clipboard.swift in Sources */,
 				703B6D99295DD3E4000AE236 /* StreamView.swift in Sources */,
 				70396655295CE82600FFE790 /* ClipsRowElement.swift in Sources */,
 				700891AE2959F823000B50F3 /* KeychainHelper.swift in Sources */,
 				7053388C295CB02D00124795 /* VideosRowElement.swift in Sources */,
 				7008918C2959E0D7000B50F3 /* SwiftyTwitchApp.swift in Sources */,
+				7092D8E72963491B00518F0F /* NowPlayable.swift in Sources */,
 				700891AB2959F71B000B50F3 /* AppViewModel.swift in Sources */,
 				70642DBD295F42AC0095B813 /* PictureInPicture.swift in Sources */,
 			);

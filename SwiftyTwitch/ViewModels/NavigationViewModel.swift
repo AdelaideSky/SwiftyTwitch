@@ -221,7 +221,7 @@ extension NavigationViewModel {
 
 extension NavigationViewModel {
     func quietTopStreamsRefresh() {
-        Twitch.Streams.getStreams(first: 7) { result in
+        Twitch.Streams.getStreams(first: 10) { result in
             switch result {
             case .success(let getStreamsData):
                 for index in 0...min(getStreamsData.streamData.count, 5) {

@@ -11,6 +11,7 @@ import Alamofire
 import SwiftyJSON
 import AVKit
 import SwiftUI
+import MediaPlayer
 
 class PlayerViewModel: ObservableObject {
     
@@ -30,7 +31,7 @@ class PlayerViewModel: ObservableObject {
     
     var refreshTimer: Timer? = nil
     
-    var avassetDelegate: AVAssetDelegate = AVAssetDelegate()
+    @Published var nowPlayable = StreamNowPlayableBehavior()
     
     struct Channel {
         var channelInfo: Follow
@@ -39,7 +40,7 @@ class PlayerViewModel: ObservableObject {
     
     init(channel: Follow) {
         self.channel = channel
-        self.refreshTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval(30), repeats: true, block: { _ in
+        self.refreshTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval(60), repeats: true, block: { _ in
             print("refreshing...")
             self.refreshData()
         })
@@ -48,25 +49,7 @@ class PlayerViewModel: ObservableObject {
             
         }
     }
-    //TODO: make custom AVAssetResourceLoaderDelegate to remove ads.
-    class AVAssetDelegate: NSObject, AVAssetResourceLoaderDelegate {
-        
-        func resourceLoader(_ resourceLoader: AVAssetResourceLoader, shouldWaitForLoadingOfRequestedResource loadingRequest: AVAssetResourceLoadingRequest) -> Bool {
-            let request: URLRequest = loadingRequest.request
-            let url: URL = request.url!
-//            let scheme: String = url.scheme!
-            
-//            if let _ = loadingRequest.contentInformationRequest {
-//                return handleContentInformationRequest(request: loadingRequest)
-//            } else if let _ = loadingRequest.dataRequest {
-//                return handleDataRequest(request: loadingRequest)
-//            } else {
-//                return false
-//            }
-             
-            return false
-        }
-    }
+    
     
 }
 
@@ -93,16 +76,14 @@ extension PlayerViewModel {
 
 extension PlayerViewModel {
     func loadStream() {
-        let request = AF.request("https://pwn.sh/tools/streamapi.py", method: .get, parameters: ["url":"twitch.tv/\(self.channel.userData.userLoginName)"])
+        let request = AF.request((Constants.apiURL+"/twitch/\(self.channel.userData.userLoginName)"), method: .get)
         request.responseData() { response in
             if response.data != nil {
                 do {
                     let json = try JSON(data: response.data!)
                     var answer: [StreamQuality:URL] = [:]
-                    for quality in json["urls"].dictionaryValue.keys {
-                        // answer[StreamQuality(rawValue: quality)!] = URL(string: json["urls"][quality].stringValue.replacingOccurrences(of: "https", with: "twitchStream"))!
-                        answer[StreamQuality(rawValue: quality)!] = URL(string: json["urls"][quality].stringValue)!
-                        
+                    for quality in json.dictionaryValue.keys {
+                        answer[StreamQuality(rawValue: quality)!] = URL(string: json[quality].stringValue)!
                     }
                     self.streams = answer
                     print(self.streams)
@@ -116,14 +97,14 @@ extension PlayerViewModel {
     func loadPlayerItem() {
         if !self.streams.isEmpty {
             self.selectedStream = self.streams.keys.filter( {$0 != .audio_only && $0 != .q_160p && $0 != .q_360p} ).first!
-            var asset = AVURLAsset(url: self.streams[selectedStream!]!)
-            asset.resourceLoader.setDelegate(avassetDelegate, queue: .init(label: "swiftytwitch.streamDelegate"))
-            self.player = AVPlayer(playerItem: AVPlayerItem(asset: asset, automaticallyLoadedAssetKeys: ["availableMediaCharacteristicsWithMediaSelectionOptions"]))
+            var item = AVPlayerItem(url: self.streams[selectedStream!]!)
+            self.player = AVPlayer(playerItem: item)
 //            self.player = AVPlayer(url: self.streams[selectedStream!]!)
 //            self.player?.seek(to: CMTimeMakeWithSeconds(15.169, preferredTimescale: 60000))
             self.player?.play()
             self.isPlaying = true
-            
+            setupNowPlaying()
+            self.nowPlayable.handleNowPlayableSessionStart()
         }
     }
     func changeQuality() {
@@ -132,33 +113,97 @@ extension PlayerViewModel {
             self.player?.replaceCurrentItem(with: AVPlayerItem(url: self.streams[selectedStream!]!))
         }
     }
-    func changeQuality2() {
-        if !self.streams.isEmpty {
-            self.player?.replaceCurrentItem(with: AVPlayerItem(url: self.streams[.audio_only]!))
-        }
-    }
     func getPlayerView() -> AVPlayerView {
         let view = AVPlayerView()
         view.player = self.player
         view.controlsStyle = .none
         return view
     }
+    func getData(from url: URL, completion: @escaping (NSImage?) -> Void) {
+        URLSession.shared.dataTask(with: url, completionHandler: {(data, response, error) in
+            if let data = data {
+                completion(NSImage(data: data))
+            }
+        })
+        .resume()
+    }
+
+    func setupNowPlaying() {
+        let url = self.channel.userData.profileImageURL
+        getData(from: url) { [weak self] image in
+            guard let self = self,
+                  let downloadedImage = image else {
+                return
+            }
+            let artwork = MPMediaItemArtwork.init(boundsSize: downloadedImage.size, requestHandler: { _ -> NSImage in
+                downloadedImage.backgroundColor = .windowBackgroundColor
+                downloadedImage.size = CGSize(width: 200, height: 200)
+                return downloadedImage
+            })
+            self.setNowPlayingInfo(with: artwork)
+        }
+    }
+    func setNowPlayingInfo(with artwork: MPMediaItemArtwork) {
+        var nowPlayingInfo = NowPlayableStaticMetadata(assetURL: URL(string: "https://twitch.tv/\(self.channel.userData.userLoginName)")!,
+                                                       mediaType: .video,
+                                                       isLiveStream: true,
+                                                       title: self.channel.streamData!.title,
+                                                       artist: self.channel.userData.userDisplayName,
+                                                       artwork: artwork,
+                                                       albumArtist: nil,
+                                                       albumTitle: nil)
+        do {
+            try self.nowPlayable.handleNowPlayableConfiguration(commands: [.play, .pause, .togglePausePlay, .stop], disabledCommands: [], commandHandler: { command, commandEvent in
+                switch command {
+                case .play:
+                    if self.player != nil {
+                        self.player!.play()
+                        guard let livePosition = self.player!.currentItem?.seekableTimeRanges.last as? CMTimeRange else {
+                            return MPRemoteCommandHandlerStatus.commandFailed
+                        }
+                        self.player!.seek(to: CMTimeRangeGetEnd(livePosition))
+                        self.nowPlayable.handleNowPlayablePlaybackChange(playing: true, metadata: NowPlayableDynamicMetadata(rate: 0, position: 0, duration: 0, currentLanguageOptions: [], availableLanguageOptionGroups: []))
+                        self.isPlaying = true
+                        return MPRemoteCommandHandlerStatus.success
+                    } else {
+                        return MPRemoteCommandHandlerStatus.noSuchContent
+                    }
+                case .pause:
+                    if self.player != nil {
+                        self.player!.pause()
+                        self.nowPlayable.handleNowPlayablePlaybackChange(playing: false, metadata: NowPlayableDynamicMetadata(rate: 0, position: 0, duration: 0, currentLanguageOptions: [], availableLanguageOptionGroups: []))
+                        self.isPlaying = false
+                        return MPRemoteCommandHandlerStatus.success
+                    } else {
+                        return MPRemoteCommandHandlerStatus.noSuchContent
+                    }
+                default:
+                    return MPRemoteCommandHandlerStatus.commandFailed
+                }
+            }, interruptionHandler: { _ in
+                
+            })
+            self.nowPlayable.handleNowPlayableSessionStart()
+            self.nowPlayable.handleNowPlayableItemChange(metadata: nowPlayingInfo)
+        } catch {}
+        
+      }
 }
 
 extension PlayerViewModel {
     func loadPlayer() {
-        let request = AF.request("https://pwn.sh/tools/streamapi.py", method: .get, parameters: ["url":"twitch.tv/\(self.channel.userData.userLoginName)"])
+        let request = AF.request((Constants.apiURL+"/twitch/\(self.channel.userData.userLoginName)"), method: .get)
         request.responseData() { response in
             if response.data != nil {
                 do {
                     let json = try JSON(data: response.data!)
                     var answer: [StreamQuality:URL] = [:]
-                    for quality in json["urls"].dictionaryValue.keys {
-                        //answer[StreamQuality(rawValue: quality)!] = URL(string: json["urls"][quality].stringValue.replacingOccurrences(of: "https", with: "twitchStream"))!
-                        answer[StreamQuality(rawValue: quality)!] = URL(string: json["urls"][quality].stringValue)!
+                    for quality in json.dictionaryValue.keys {
+                        answer[StreamQuality(rawValue: quality)!] = URL(string: json[quality].stringValue)!
                     }
                     self.streams = answer
                     self.loadPlayerItem()
+                    
                 } catch {print("error streams")}
             }
         }
