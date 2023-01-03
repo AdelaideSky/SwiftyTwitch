@@ -32,6 +32,9 @@
 		703B6D99295DD3E4000AE236 /* StreamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703B6D98295DD3E4000AE236 /* StreamView.swift */; };
 		703B6D9B295E2143000AE236 /* AVPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703B6D9A295E2143000AE236 /* AVPlayer.swift */; };
 		703B6D9D295E2724000AE236 /* ToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703B6D9C295E2724000AE236 /* ToggleStyle.swift */; };
+		704138C32964347900B5BF14 /* HomeScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 704138C22964347900B5BF14 /* HomeScreenView.swift */; };
+		704138CB2964C89A00B5BF14 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 704138CA2964C89A00B5BF14 /* Introspect */; };
+		704138D42964D0B500B5BF14 /* WebViewKit in Frameworks */ = {isa = PBXBuildFile; productRef = 704138D32964D0B500B5BF14 /* WebViewKit */; };
 		70533887295C8CD400124795 /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70533886295C8CD400124795 /* VisualEffectView.swift */; };
 		7053388A295CA51400124795 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 70533889295CA51400124795 /* SDWebImageSwiftUI */; };
 		7053388C295CB02D00124795 /* VideosRowElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7053388B295CB02D00124795 /* VideosRowElement.swift */; };
@@ -85,6 +88,7 @@
 		703B6D98295DD3E4000AE236 /* StreamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamView.swift; sourceTree = "<group>"; };
 		703B6D9A295E2143000AE236 /* AVPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVPlayer.swift; sourceTree = "<group>"; };
 		703B6D9C295E2724000AE236 /* ToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleStyle.swift; sourceTree = "<group>"; };
+		704138C22964347900B5BF14 /* HomeScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenView.swift; sourceTree = "<group>"; };
 		70533886295C8CD400124795 /* VisualEffectView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
 		7053388B295CB02D00124795 /* VideosRowElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideosRowElement.swift; sourceTree = "<group>"; };
 		70602D4E295C7FD000439DBE /* ChannelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelView.swift; sourceTree = "<group>"; };
@@ -114,11 +118,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				70642DB7295F1C2B0095B813 /* AVKit.framework in Frameworks */,
+				704138CB2964C89A00B5BF14 /* Introspect in Frameworks */,
 				70642DB8295F1C2B0095B813 /* AVFoundation.framework in Frameworks */,
 				7053388A295CA51400124795 /* SDWebImageSwiftUI in Frameworks */,
 				700891B62959FBFD000B50F3 /* SwiftyJSON in Frameworks */,
 				700891A22959E1C6000B50F3 /* SwiftTwitch in Frameworks */,
 				70602D56295C85EC00439DBE /* DominantColor in Frameworks */,
+				704138D42964D0B500B5BF14 /* WebViewKit in Frameworks */,
 				700891B32959FBB3000B50F3 /* Alamofire in Frameworks */,
 				70642DBB295F3D720095B813 /* Pipify in Frameworks */,
 			);
@@ -182,6 +188,7 @@
 		700891A72959F6D0000B50F3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				704138C12964343000B5BF14 /* HomeScreenView */,
 				703B6D97295DD3CB000AE236 /* StreamView */,
 				70602D4D295C7FBE00439DBE /* ChannelView */,
 				700891B92959FF6A000B50F3 /* Elements */,
@@ -235,8 +242,8 @@
 		700891BC2959FFAA000B50F3 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				700891BD2959FFAA000B50F3 /* LogInView.swift */,
 				700891BE2959FFAA000B50F3 /* NavigationView.swift */,
+				700891BD2959FFAA000B50F3 /* LogInView.swift */,
 				703B6D95295DC9C2000AE236 /* PlayerView.swift */,
 				703B6D9A295E2143000AE236 /* AVPlayer.swift */,
 			);
@@ -249,6 +256,14 @@
 				703B6D98295DD3E4000AE236 /* StreamView.swift */,
 			);
 			path = StreamView;
+			sourceTree = "<group>";
+		};
+		704138C12964343000B5BF14 /* HomeScreenView */ = {
+			isa = PBXGroup;
+			children = (
+				704138C22964347900B5BF14 /* HomeScreenView.swift */,
+			);
+			path = HomeScreenView;
 			sourceTree = "<group>";
 		};
 		70602D4D295C7FBE00439DBE /* ChannelView */ = {
@@ -323,6 +338,8 @@
 				70602D55295C85EC00439DBE /* DominantColor */,
 				70533889295CA51400124795 /* SDWebImageSwiftUI */,
 				70642DBA295F3D720095B813 /* Pipify */,
+				704138CA2964C89A00B5BF14 /* Introspect */,
+				704138D32964D0B500B5BF14 /* WebViewKit */,
 			);
 			productName = SwiftyTwitch;
 			productReference = 700891882959E0D7000B50F3 /* SwiftyTwitch.app */;
@@ -358,6 +375,8 @@
 				70602D54295C85EB00439DBE /* XCRemoteSwiftPackageReference "DominantColor" */,
 				70533888295CA51400124795 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 				70642DB9295F3D720095B813 /* XCRemoteSwiftPackageReference "swiftui-pipify" */,
+				704138C92964C89A00B5BF14 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
+				704138D22964D0B500B5BF14 /* XCRemoteSwiftPackageReference "WebViewKit" */,
 			);
 			productRefGroup = 700891892959E0D7000B50F3 /* Products */;
 			projectDirPath = "";
@@ -412,6 +431,7 @@
 				703B6D96295DC9C2000AE236 /* PlayerView.swift in Sources */,
 				70602D4F295C7FD000439DBE /* ChannelView.swift in Sources */,
 				7039665B295D06E600FFE790 /* ChannelInfoBarView.swift in Sources */,
+				704138C32964347900B5BF14 /* HomeScreenView.swift in Sources */,
 				7092D8E82963491B00518F0F /* NowPlayableError.swift in Sources */,
 				70642DC1295F9E730095B813 /* isMouseHovering.swift in Sources */,
 				7092D8E92963491B00518F0F /* NowPlayableCommand.swift in Sources */,
@@ -641,6 +661,22 @@
 				kind = branch;
 			};
 		};
+		704138C92964C89A00B5BF14 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.4;
+			};
+		};
+		704138D22964D0B500B5BF14 /* XCRemoteSwiftPackageReference "WebViewKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielsaidi/WebViewKit.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		70533888295CA51400124795 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI";
@@ -681,6 +717,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 700891B42959FBFC000B50F3 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
 			productName = SwiftyJSON;
+		};
+		704138CA2964C89A00B5BF14 /* Introspect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 704138C92964C89A00B5BF14 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
+			productName = Introspect;
+		};
+		704138D32964D0B500B5BF14 /* WebViewKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 704138D22964D0B500B5BF14 /* XCRemoteSwiftPackageReference "WebViewKit" */;
+			productName = WebViewKit;
 		};
 		70533889295CA51400124795 /* SDWebImageSwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;

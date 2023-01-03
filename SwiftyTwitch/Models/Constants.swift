@@ -13,7 +13,8 @@ struct StorageStrings {
     static let userID = "com.adesky.SwiftyTwitch.user.id"
     static let userName = "com.adesky.SwiftyTwitch.user.name"
     
-    static let navBarSortOrder = "com.adesky.SwiftyTwitch.view.navBarSortOrder"
+    static let ambianceMode = "com.adesky.SwiftyTwitch.player.ambianceMode"
+    static let theaterMode = "com.adesky.SwiftyTwitch.player.theaterMode"
 }
 
 struct Constants {

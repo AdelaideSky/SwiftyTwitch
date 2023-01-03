@@ -15,7 +15,6 @@ import MediaPlayer
 
 class PlayerViewModel: ObservableObject {
     
-    @Published var theaterMode: Bool = false
     @Published var fullScreen: Bool = false
     @Published var pictureInPicture: Bool = false
     
@@ -41,7 +40,6 @@ class PlayerViewModel: ObservableObject {
     init(channel: Follow) {
         self.channel = channel
         self.refreshTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval(60), repeats: true, block: { _ in
-            print("refreshing...")
             self.refreshData()
         })
         Task {
@@ -87,7 +85,10 @@ extension PlayerViewModel {
                     }
                     self.streams = answer
                     print(self.streams)
-                } catch {print("error streams")}
+                } catch {
+                    print("error streams")
+                    self.status = .error
+                }
             }
         }
     }
@@ -192,19 +193,28 @@ extension PlayerViewModel {
 
 extension PlayerViewModel {
     func loadPlayer() {
+        self.status = .none
         let request = AF.request((Constants.apiURL+"/twitch/\(self.channel.userData.userLoginName)"), method: .get)
         request.responseData() { response in
             if response.data != nil {
                 do {
                     let json = try JSON(data: response.data!)
                     var answer: [StreamQuality:URL] = [:]
-                    for quality in json.dictionaryValue.keys {
-                        answer[StreamQuality(rawValue: quality)!] = URL(string: json[quality].stringValue)!
+                    if json.count > 1 {
+                        for quality in json.dictionaryValue.keys {
+                            answer[StreamQuality(rawValue: quality)!] = URL(string: json[quality].stringValue)!
+                        }
+                        self.streams = answer
+                        self.loadPlayerItem()
+                    } else {
+                        print("error streams: no streams")
+                        self.status = .error
                     }
-                    self.streams = answer
-                    self.loadPlayerItem()
                     
-                } catch {print("error streams")}
+                } catch {
+                    print("error streams: server error.")
+                    self.status = .error
+                }
             }
         }
     }

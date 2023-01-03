@@ -92,7 +92,7 @@ struct ChannelView: View {
                 }
 
             }
-        }
+        }.navigationTitle(channelVM.channel.channelInfo.userData.userDisplayName)
     }
 }
 

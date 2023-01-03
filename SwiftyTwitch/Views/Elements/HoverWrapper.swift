@@ -39,7 +39,7 @@ public struct HoverView<Content>: View where Content: View {
           if $0 {
               if isDelayed {
                   hover = $0
-                  delayTimer = Timer(timeInterval: TimeInterval(1), repeats: false, block: { _ in
+                  delayTimer = Timer(timeInterval: TimeInterval(1.5), repeats: false, block: { _ in
                       if hover {
                           onHover(true)
                       }
@@ -57,7 +57,7 @@ public struct HoverView<Content>: View where Content: View {
   
   // MARK: - Public Initalizers
   
-  public init(delay: Bool = true,action: @escaping () -> Void = {}, onHover: @escaping (Bool) -> Void = { _ in }, content c: @escaping (Binding<Bool>, Bool) -> Content) {
+  public init(delay: Bool = true, action: @escaping () -> Void = {}, onHover: @escaping (Bool) -> Void = { _ in }, content c: @escaping (Binding<Bool>, Bool) -> Content) {
     self.action = action
     self.onHover = onHover
     self.content = c

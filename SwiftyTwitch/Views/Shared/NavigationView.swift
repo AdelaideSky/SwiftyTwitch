@@ -16,7 +16,7 @@ struct NavigationView: View {
     var body: some View {
         NavigationSplitView(sidebar: {
             List() {
-                NavigationLink(destination: ContentView()) {
+                NavigationLink(destination: HomeScreenView()) {
                     Label("Home", systemImage: "house")
                 }
                 Spacer().frame(height: 10)
@@ -143,7 +143,18 @@ struct NavigationView: View {
             .frame(minWidth: 250, idealWidth: 250)
             
         }, detail: {
-            Text("zrgeht")
+            switch navigationVM.status {
+            case .none:
+                Text("Waiting for fetching streams...")
+            case .startedFetching:
+                LoadingElement()
+            case .doneFetching:
+                HomeScreenView()
+            case .error:
+                Text("ERROR")
+                    .font(.footnote)
+                    .opacity(0.5)
+            }
         }).onAppear() {
             navigationVM.loadFollowList(userID: appVM.userID)
             navigationVM.loadTopStreams()

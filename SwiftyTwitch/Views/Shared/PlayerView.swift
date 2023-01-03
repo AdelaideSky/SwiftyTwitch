@@ -13,29 +13,55 @@ import SDWebImageSwiftUI
 
 struct PlayerView: View {
     @EnvironmentObject var playerVM: PlayerViewModel
-    
+    @EnvironmentObject var appVM: AppViewModel
     var body: some View {
         VStack {
-            if playerVM.player != nil {
-                CustomPlayerView(player: playerVM.player!)
-                    .overlay() {
-                        if playerVM.player != nil {
-                            PlayerOverlayView()
+            if playerVM.status != .error {
+                if playerVM.player != nil {
+                    CustomPlayerView(player: playerVM.player!)
+                        .overlay() {
+                            if playerVM.player != nil {
+                                PlayerOverlayView()
+                            }
                         }
+                        .background(Color.clear)
+                } else {
+                    ProgressView()
+                        .scaleEffect(0.5)
+                }
+            } else if playerVM.status == .error{
+                ZStack {
+                    Spacer().frame(maxWidth: .infinity, maxHeight: .infinity).aspectRatio(16/9, contentMode: .fit)
+                    VStack {
+                        Image(systemName: "exclamationmark.circle")
+                            .resizable()
+                            .scaledToFit()
+                            .foregroundColor(.accentColor)
+                            .opacity(0.5)
+                            .frame(width: 70)
+                        VStack {
+                            Text("ERROR")
+                                .font(.headline)
+                                .opacity(0.5)
+                                .padding(.bottom, 3)
+                            Text("Something went wrong loading this stream... Double click anywhere to reload the player")
+                                .font(.footnote)
+                                .opacity(0.5)
+                        }.padding(.vertical, 20)
                     }
-                    .background(Color.clear)
-                    .onDisappear() {
-                        if playerVM.player != nil {
-                            playerVM.player!.pause()
-                        }
-                    }
+                }.contentShape(RoundedRectangle(cornerRadius: 5))
+                .onTapGesture(count: 2) {
+                    playerVM.loadPlayer()
+                }
             }
+            
         }.cornerRadius(10)
     }
 }
 
 struct PlayerOverlayView: View {
     @EnvironmentObject var playerVM: PlayerViewModel
+    @EnvironmentObject var appVM: AppViewModel
     
     @State var isHover = false
     @State var showOverlay = false
@@ -184,6 +210,8 @@ struct PlayerOverlayView: View {
                                 }
                             }
                             Divider()
+                            Toggle("Ambiance mode", isOn: $appVM.ambianceMode)
+                            Divider()
                             Button("Reload player") {
                                 playerVM.player = nil
                                 playerVM.loadPlayer()
@@ -204,7 +232,7 @@ struct PlayerOverlayView: View {
                             }
                             .padding(.trailing, -1.5)
                         
-                        Toggle("Theater mode", isOn: $playerVM.theaterMode)
+                        Toggle("Theater mode", isOn: $appVM.theaterMode)
                             .keyboardShortcut("t")
                             .toggleStyle(TheaterModeToggleStyle())
                             .padding(.horizontal, 5)

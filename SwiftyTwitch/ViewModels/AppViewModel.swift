@@ -16,6 +16,9 @@ class AppViewModel: ObservableObject {
     @AppStorage(StorageStrings.userID) var userID: String = ""
     @AppStorage(StorageStrings.userName) var userName: String = ""
     
+    @AppStorage(StorageStrings.theaterMode) var theaterMode: Bool = false
+    @AppStorage(StorageStrings.ambianceMode) var ambianceMode: Bool = false
+    
     @Published var authState: authentificationState = .none
     
     @Published var clientID: String = ""
@@ -93,6 +96,11 @@ class AppViewModel: ObservableObject {
 
 extension AppViewModel {
     func playStream(streamer: Follow) -> Bool {
+        if self.streamPlayer != nil {
+            self.streamPlayer!.player?.pause()
+            self.streamPlayer!.player = nil
+            self.streamPlayer = nil
+        }
         self.streamPlayer = PlayerViewModel(channel: streamer)
         return true
     }
