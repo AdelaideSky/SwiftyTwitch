@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
+import WhatsNewKit
 
 struct ContentView: View {
     @EnvironmentObject var appVM: AppViewModel
@@ -22,8 +24,7 @@ struct ContentView: View {
                     NavigationView()
                         .environmentObject(navVM)
                         .toolbar() {
-                            ToolbarItemGroup {
-                                Spacer()
+                            ToolbarItem {
                                 TextField("Search anything", text: $test)
                                     .controlSize(.large)
                                     .padding(8)
@@ -32,6 +33,10 @@ struct ContentView: View {
                                                                 .stroke(Color.clear)
                                                                 .background(Color.black.opacity(0.2).cornerRadius(8)))
                                     .textFieldStyle(PlainTextFieldStyle())
+                                    .disabled(true)
+                            }
+                            ToolbarItem() {
+                                AuthStateManagerElement()
                             }
                         }
                 case .error:
@@ -40,6 +45,8 @@ struct ContentView: View {
         }.onAppear() {
             appVM.restoreLoginState()
         }
+        .whatsNewSheet()
+        
     }
 }
 

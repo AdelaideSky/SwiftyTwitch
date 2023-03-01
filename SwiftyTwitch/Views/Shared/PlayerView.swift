@@ -14,6 +14,7 @@ import SDWebImageSwiftUI
 struct PlayerView: View {
     @EnvironmentObject var playerVM: PlayerViewModel
     @EnvironmentObject var appVM: AppViewModel
+    
     var body: some View {
         VStack {
             if playerVM.status != .error {
@@ -91,55 +92,105 @@ struct PlayerOverlayView: View {
                             .frame(width: 30, height: 30)
                             
                         } else if playerVM.fullScreen {
-                            HStack {
-                                WebImage(url: playerVM.channel.userData.profileImageURL)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 80, height: 80)
-                                    .cornerRadius(6)
-                                    .shadow(radius: 5)
-                                    .padding(.leading, 20)
-                                    .padding(.trailing, 10)
-                                VStack(alignment: .leading) {
-                                    HStack {
-                                        Text(playerVM.channel.userData.userDisplayName)
-                                            .font(.system(size: 25))
-                                            .bold()
-                                        if playerVM.channel.userData.broadcasterType == .partner {
-                                            Image(systemName: "checkmark.seal.fill")
-                                                .foregroundColor(.purple)
-                                                .font(.system(size: 15))
-                                                .offset(y: -1)
+                            VStack(alignment: .leading) {
+                                HStack {
+                                    WebImage(url: playerVM.channel.userData.profileImageURL)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 80, height: 80)
+                                        .cornerRadius(6)
+                                        .shadow(radius: 5)
+                                        .padding(.leading, 20)
+                                        .padding(.trailing, 10)
+                                    VStack(alignment: .leading) {
+                                        HStack {
+                                            Text(playerVM.channel.userData.userDisplayName)
+                                                .font(.system(size: 25))
+                                                .bold()
+                                            if playerVM.channel.userData.broadcasterType == .partner {
+                                                Image(systemName: "checkmark.seal.fill")
+                                                    .foregroundColor(.purple)
+                                                    .font(.system(size: 15))
+                                            }
+                                        }.padding(.bottom, 0.5)
+                                        Text("\(playerVM.channel.streamData!.title)")
+                                            .font(.title3)
+                                            .padding(.bottom, 2)
+                                        HStack {
+                                            Text("\(playerVM.channel.streamData!.gameName!.isEmpty ? ("Plays "+(playerVM.channel.streamData!.gameName ?? "")) : "Streams") for \(playerVM.channel.streamData!.viewerCount) viewers")
+                                                .font(.headline)
                                         }
-                                    }.padding(.bottom, 0.5)
-                                    Text("\(playerVM.channel.streamData!.title)")
-                                        .font(.title3)
-                                        .padding(.bottom, 2)
-                                    HStack {
-                                        Text("\(playerVM.channel.streamData!.gameName!.isEmpty ? ("Plays "+(playerVM.channel.streamData!.gameName ?? "")) : "Streams") for \(playerVM.channel.streamData!.viewerCount) viewers")
-                                            .font(.headline)
-                                    }
-                                }.padding(10)
-                                
-                            }.background() {
-                                VisualEffectView(material: .menu, blendingMode: .withinWindow)
-                                    .cornerRadius(10)
-                                    .opacity(0.5)
+                                    }.padding(10)
+                                    
+                                }.background() {
+                                    VisualEffectView(material: .menu, blendingMode: .withinWindow)
+                                        .cornerRadius(10)
+                                        .opacity(0.5)
+                                }
+                                .shadow(radius: 3)
+                                if appVM.chatPanelConfig == .left {
+                                    VStack(spacing: 0) {
+//                                        HStack {
+//                                            Spacer()
+//                                            Button(action: {
+//                                                appVM.chatPanelConfig = .right
+//                                            }) {
+//                                                Label("Move to right", systemImage: "arrowshape.turn.up.right.fill").labelStyle(.iconOnly)
+//                                            }
+//                                        }.controlSize(.small)
+//                                            .buttonStyle(.plain)
+//                                            .shadow(radius: 2)
+//                                            .padding(.bottom, 3)
+//                                            .opacity(0.8)
+                                        ZStack {
+                                            VisualEffectView(material: .hudWindow, blendingMode: .withinWindow)
+                                            CustomWebView(data: WebViewData(url: URL(string: "https://www.twitch.tv/popout/\(appVM.streamPlayer!.channel.userData.userLoginName)/chat")))
+                                        }.cornerRadius(10)
+                                            .shadow(radius: 3)
+                                    }.frame(width: 350)
+                                        .padding(.top, 10)
+                                        .padding(.bottom, 15)
+                                        
+                                }
                             }
-                            
                         }
-                        Spacer(minLength: 20).frame(minWidth: 10, maxWidth: .infinity)
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 5)
-                                .fill(.red)
-                                .frame(width: 50, height: 25)
-                            Text("LIVE")
-                                .font(.title2)
-                                .bold()
+                        Spacer(minLength: 20)
+                        VStack(alignment: .trailing) {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 5)
+                                    .fill(.red)
+                                    .frame(width: 50, height: 25)
+                                Text("LIVE")
+                                    .font(.title2)
+                                    .bold()
+                            }
+                            if playerVM.fullScreen && appVM.chatPanelConfig == .right {
+                                VStack(spacing: 0) {
+//                                    HStack {
+//                                        Button(action: {
+//                                            appVM.chatPanelConfig = .left
+//                                        }) {
+//                                            Label("Move to left", systemImage: "arrowshape.turn.up.left.fill").labelStyle(.iconOnly)
+//                                        }
+//                                        Spacer()
+//                                    }.controlSize(.small)
+//                                        .buttonStyle(.plain)
+//                                        .shadow(radius: 2)
+//                                        .padding(.bottom, 3)
+//                                        .opacity(0.8)
+                                    ZStack {
+                                        VisualEffectView(material: .hudWindow, blendingMode: .withinWindow)
+                                        CustomWebView(data: WebViewData(url: URL(string: "https://www.twitch.tv/popout/\(appVM.streamPlayer!.channel.userData.userLoginName)/chat")))
+                                    }.cornerRadius(10)
+                                        .shadow(radius: 3)
+                                }.frame(width: 350)
+                                    .padding(.top, 10)
+                                    .padding(.bottom, 15)
+                            }
                         }
                         
                     }.padding(10)
-                    Spacer().frame(maxHeight: .infinity)
+                    Spacer()
                     HStack() {
                         Toggle("Play/Pause", isOn: $playerVM.isPlaying)
                             .toggleStyle(MediaControlToggleStyle(player: playerVM.player!))
@@ -211,6 +262,13 @@ struct PlayerOverlayView: View {
                             }
                             Divider()
                             Toggle("Ambiance mode", isOn: $appVM.ambianceMode)
+                            if playerVM.fullScreen {
+                                Picker("Chat panel", selection: $appVM.chatPanelConfig) {
+                                    Text("On right").tag(ChatPanelConfig.right)
+                                    Text("On left").tag(ChatPanelConfig.left)
+                                    Text("Desactivated").tag(ChatPanelConfig.none)
+                                }
+                            }
                             Divider()
                             Button("Reload player") {
                                 playerVM.player = nil
@@ -255,7 +313,7 @@ struct PlayerOverlayView: View {
                         .cornerRadius(10)
                         .padding(.horizontal, 15)
                         .padding(.bottom, 10)
-                }.isHidden(!showOverlay, remove: false)
+                }.opacity(showOverlay ? 1 : 0)
             }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                 .animation(.easeInOut(duration: 0.2), value: showOverlay)
                 .onHover() { hoverState in

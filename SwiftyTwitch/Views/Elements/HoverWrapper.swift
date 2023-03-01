@@ -20,6 +20,7 @@ public struct HoverView<Content>: View where Content: View {
     var isDelayed: Bool = true
   /// Whether the view is hovered.
   @State public var hover: Bool = false
+    @State private var internalHover: Bool = false
   /// Whether the view is clicked.
   @State public var clicked: Bool = false
   
@@ -38,17 +39,20 @@ public struct HoverView<Content>: View where Content: View {
       content($hover, clicked).onHover {
           if $0 {
               if isDelayed {
-                  hover = $0
-                  delayTimer = Timer(timeInterval: TimeInterval(1.5), repeats: false, block: { _ in
-                      if hover {
+                  internalHover = $0
+                  delayTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval(0.1), repeats: false, block: { _ in
+                      if internalHover {
+                          hover = true
                           onHover(true)
                       }
                   })
               } else {
+                  internalHover = $0
                   hover = $0
                   onHover($0)
               }
           } else {
+              internalHover = $0
               hover = $0
               onHover($0)
           }

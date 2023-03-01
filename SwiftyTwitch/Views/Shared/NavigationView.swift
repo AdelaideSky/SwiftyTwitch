@@ -127,15 +127,7 @@ struct NavigationView: View {
                             ChannelListElement(channels: navigationVM.topStreams)
                         }
                     }
-                }
-                Spacer()
-                
-                Divider()
-                Button(action: {
-                    appVM.logOut()
-                }, label: {
-                    Label("Sign Out", systemImage: "arrow.backward")
-                }).buttonStyle(PlainButtonStyle())
+                }                                
             }
             .font(.caption)
             .listStyle(SidebarListStyle())

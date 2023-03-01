@@ -25,12 +25,12 @@ extension Date {
         let seconds = components.second
         if (minutes ?? 0) > 0 {
             if (hours ?? 0) > 0 {
-                return "\(hours ?? 0):\(minutes ?? 0):\(seconds ?? 0)"
+                return String(format: "%02d:%02d:%02d", hours ?? 0, minutes ?? 0, seconds ?? 0)
             } else {
-                return "\(minutes ?? 0):\(seconds ?? 0)"
+                return String(format: "00:%02d:%02d", minutes ?? 0, seconds ?? 0)
             }
         } else {
-            return "\(seconds ?? 0)"
+            return String(format: "00:00:%02d", seconds ?? 0)
         }
     }
 }
