@@ -13,16 +13,23 @@ import SwiftyJSON
 
 class AppViewModel: ObservableObject {
     
+    static var shared: AppViewModel {
+        AppViewModel()
+    }
+    
     @AppStorage(StorageStrings.userID) var userID: String = ""
     @AppStorage(StorageStrings.userName) var userName: String = ""
     
     @AppStorage(StorageStrings.theaterMode) var theaterMode: Bool = false
-    @AppStorage(StorageStrings.ambianceMode) var ambianceMode: Bool = false
+    @AppStorage(StorageStrings.ambianceMode) var ambianceMode: Bool = true
+    @AppStorage(StorageStrings.lastSelectedQuality) var lastSelectedQuality: StreamQuality = .q_720p60
+    @AppStorage(StorageStrings.chatPanelConfig) var chatPanelConfig: ChatPanelConfig = .right
     
     @Published var authState: authentificationState = .none
     
     @Published var clientID: String = ""
     @Published var accessToken: String = ""
+    @Published var userInfos: UserData?
     
     @Published var streamPlayer: PlayerViewModel? = nil
     
@@ -52,7 +59,22 @@ class AppViewModel: ObservableObject {
             self.accessToken = accessToken!
             TwitchTokenManager.shared.accessToken = self.accessToken
             TwitchTokenManager.shared.clientID = self.clientID
+            self.loadLoggedUserInfos()
             self.authState = .loggedIn
+        }
+    }
+    
+    public func loadLoggedUserInfos() {
+        print("load infos logged user")
+        Twitch.Users.getUsers(userIds: [self.userID], userLoginNames: []) { result in
+            switch result {
+                case .success(let getUserData):
+                self.userInfos = getUserData.userData.first
+                
+                case .failure(let data,_ , let error):
+                    print(error ?? "error")
+                    print(String(data: data ?? Data(), encoding: .utf8))
+            }
         }
     }
     
@@ -95,16 +117,22 @@ class AppViewModel: ObservableObject {
 }
 
 extension AppViewModel {
-    func playStream(streamer: Follow) -> Bool {
+    func playStream(streamer: Follow) {
         if self.streamPlayer != nil {
             self.streamPlayer!.player?.pause()
+            self.streamPlayer!.dontUpdateStreams = true
             self.streamPlayer!.player = nil
             self.streamPlayer = nil
         }
         self.streamPlayer = PlayerViewModel(channel: streamer)
-        return true
     }
     func stopPlaying() {
+        if self.streamPlayer != nil {
+            self.streamPlayer!.player?.pause()
+            self.streamPlayer!.dontUpdateStreams = true
+            self.streamPlayer!.player = nil
+            self.streamPlayer = nil
+        }
         if self.pictureInPictureWindow != nil {
             self.pictureInPictureWindow!.close()
             if self.streamPlayer != nil {

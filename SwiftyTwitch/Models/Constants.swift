@@ -15,8 +15,10 @@ struct StorageStrings {
     
     static let ambianceMode = "com.adesky.SwiftyTwitch.player.ambianceMode"
     static let theaterMode = "com.adesky.SwiftyTwitch.player.theaterMode"
+    static let lastSelectedQuality = "com.adesky.SwiftyTwitch.player.lastSelectedQuality"
+    static let chatPanelConfig = "com.adesky.SwiftyTwitch.player.ChatPanelFullScreen"
 }
 
 struct Constants {
-    static let apiURL = "http://127.0.0.1:5000"
+    static let apiURL = "https://swiftytwitch.adesky.fr"
 }

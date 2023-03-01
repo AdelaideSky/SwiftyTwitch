@@ -1,0 +1,53 @@
+/*
+Twitch chat browsersource CSS for OBS
+Just set the URL as https://www.twitch.tv/%%TWITCHCHANNEL%%/chat?popout=true
+And paste this entire file into the CSS box
+Original by twitch.tv/starvingpoet modified by github.com/Bluscream
+
+General Settings
+*/
+body {
+    color: #00FF00!important;
+    
+}
+
+html, body,
+.room-selector, .room-selector__header,
+.twilight-minimal-root, .tw-root--theme-light,
+.popout-chat-page, .chat-room, .tw-c-background-alt,
+.chat-container, .ember-chat-container, .stream-chat-header, .hfPMPn {
+    background: rgba(0,0,0,0)!important;
+    background-color: rgba(0,0,0,0)!important;
+}
+:root {
+    --color-hinted-grey-2: rgba(0,0,0,0)!important;
+    --color-background-alt: rgba(0,0,0,0)!important;
+}
+.user-notice-line {
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+.community-highlight {
+    background: rgba(24, 24, 27, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+}
+
+.ember-chat .chat-room, .chat-input {
+    background: rgba(0,0,0,0)!important;
+    background-color: rgba(0,0,0,0)!important;
+}
+ember-chat .chat-room {
+    top: 0!important;
+}
+
+.ember-chat .chat-header, .room-selector__header {
+    display: none!important;
+}
+
+.ember-chat .chat-messages .chat-line.admin {
+    display: none!important;
+}

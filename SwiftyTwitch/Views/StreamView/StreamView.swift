@@ -11,7 +11,8 @@ import WebViewKit
 
 struct StreamView: View {
     @EnvironmentObject var appVM: AppViewModel
-    
+    @State var showSubPopover: Bool = false
+    @State var showReportPopover: Bool = false
     @State var timeSinceStarted: String = ""
     let timeRefreshTimer = Timer.publish(every: 1, on: .current, in: .common).autoconnect()
     var player: some View {
@@ -38,19 +39,24 @@ struct StreamView: View {
             
     }
     var fullScreenPlayer: some View {
-        PlayerView()
-            .environmentObject(appVM.streamPlayer!)
-            .environmentObject(appVM)
-            .background() {
-                if appVM.ambianceMode {
-                    PlayerView()
-                        .blur(radius: 100)
-                        .environmentObject(appVM.streamPlayer!)
-                        .environmentObject(appVM)
-                } else {
-                    Spacer()
+        ZStack {
+            Toggle("disable full screen on echap.", isOn: $appVM.streamPlayer.unwrap()!.fullScreen)
+                .keyboardShortcut(.cancelAction)
+                .opacity(0)
+            PlayerView()
+                .environmentObject(appVM.streamPlayer!)
+                .environmentObject(appVM)
+                .background() {
+                    if appVM.ambianceMode {
+                        PlayerView()
+                            .blur(radius: 100)
+                            .environmentObject(appVM.streamPlayer!)
+                            .environmentObject(appVM)
+                    } else {
+                        Spacer()
+                    }
                 }
-            }
+        }
     }
     
     //MARK: - body -> player & pip/fs handling.
@@ -202,28 +208,41 @@ struct StreamView: View {
                                 }.padding(.leading, 10)
                                 Spacer()
                                 VStack {
-                                    HoverView { isHover in
-                                        HStack {
+                                    HStack {
+                                        HoverView { isHover in
+                                            HStack {
+                                                Button(action: {
+                                                }, label: {
+                                                    if appVM.streamPlayer!.channel.userData.broadcasterType != .normal {
+                                                        Label("Follow", systemImage: "heart.fill").labelStyle(.iconOnly)
+                                                    } else {
+                                                        Label("Follow", systemImage: "heart.fill").labelStyle(.titleAndIcon)
+                                                    }
+//                                                    Label("Follow", systemImage: "heart.fill").labelStyle(.iconOnly)
+                                                })
+                                                Button(action: {
+                                                    
+                                                }, label: {
+                                                    Label("Notifications", systemImage: "bell.fill").labelStyle(.iconOnly)
+                                                })
+                                            }.controlSize(.large)
+                                                .disabled(true)
+                                                .popover(isPresented: isHover) {
+                                                    Text("Not supported by twitch API... 😢")
+                                                        .padding()
+                                                }
+                                        }
+                                        if appVM.streamPlayer!.channel.userData.broadcasterType != .normal {
                                             Button(action: {
-                                            }, label: {
-                                                Label("Follow", systemImage: "heart.fill").labelStyle(.iconOnly)
-                                            })
-                                            Button(action: {
-                                                
-                                            }, label: {
-                                                Label("Notifications", systemImage: "bell.fill").labelStyle(.iconOnly)
-                                            })
-                                            Button(action: {
-                                                
+                                                showSubPopover.toggle()
                                             }, label: {
                                                 Label("Subscribe", systemImage: "star").labelStyle(.titleAndIcon)
-                                            })
-                                        }.controlSize(.large)
-                                            .disabled(true)
-                                            .popover(isPresented: isHover) {
-                                                Text("Not supported by twitch API... 😢")
-                                                    .padding()
-                                            }
+                                            }).sheet(isPresented: $showSubPopover) {
+                                                VStack {
+                                                    WebView(url: URL(string: "https://www.twitch.tv/subs/\(appVM.streamPlayer!.channel.userData.userLoginName)"))
+                                                }.frame(width: 400, height: 700)
+                                            }.controlSize(.large)
+                                        }
                                     }.padding(.bottom, 5)
                                     HStack {
                                         Label("\(appVM.streamPlayer!.channel.streamData!.viewerCount.formatted(.number))", systemImage: "person")
@@ -235,7 +254,7 @@ struct StreamView: View {
                                             .onReceive(timeRefreshTimer) { _ in
                                                 timeSinceStarted = appVM.streamPlayer!.channel.streamData!.startTime.timeAgoDetailDisplay
                                             }
-                                            .frame(width: 50)
+                                            .frame(width: 57)
                                             .padding(.trailing, 5)
                                         
                                         ShareLink(item: URL(string: "https://twitch.tv/\(appVM.streamPlayer!.channel.userData.userLoginName)")!)
@@ -248,33 +267,74 @@ struct StreamView: View {
                                             }, label: {
                                                 Label("Copy link to clipboard", systemImage: "doc.on.doc")
                                             })
-                                            Divider()
                                             Button(action: {
                                                 NSWorkspace.shared.open(URL(string: "https://twitch.tv/\(appVM.streamPlayer!.channel.userData.userLoginName)")!)
                                             }, label: {
                                                 Label("Open stream in web browser", systemImage: "globe")
+                                            })
+                                            Divider()
+                                            Button(action: {
+                                                showReportPopover.toggle()
+                                            }, label: {
+                                                Label("Report...", systemImage: "exclamationmark.bubble")
                                             })
                                         }, label: {
                                             Label("More", systemImage: "ellipsis").labelStyle(.iconOnly)
                                         }).menuStyle(BorderlessButtonMenuStyle())
                                             .menuIndicator(.hidden)
                                             .frame(width: 20)
+                                            .sheet(isPresented: $showReportPopover) {
+                                                VStack {
+                                                    WebView(url: URL(string: "https://m.twitch.tv/\(appVM.streamPlayer!.channel.userData.userLoginName)/report"))
+                                                }.frame(width: 400, height: 550)
+                                                    .interactiveDismissDisabled(false)
+                                            }
                                     }
                                 }
                             }.padding(.leading, 20)
                                 .padding(.trailing, 20)
-                            Spacer().frame(height: 200)
+                                .padding(.bottom, 10)
                         }.textSelection(.enabled)
                             .navigationTitle(appVM.streamPlayer!.channel.userData.userDisplayName)
                     }
+                    if appVM.streamPlayer != nil {
+                        VStack {
+                            VStack {
+                                HStack {
+                                    Text("About \(appVM.streamPlayer!.channel.userData.userDisplayName)")
+                                        .font(.title)
+                                        .bold()
+                                    Spacer()
+                                }
+                                Text("\(appVM.streamPlayer!.channel.userData.description ?? "nil")")
+                            }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                            
+                        }.padding()
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 5)
+                                .stroke(.separator, lineWidth: 1)
+                            
+                        )
+                        .background() {
+                            RoundedRectangle(cornerRadius: 5)
+                                .fill(.separator)
+                                .opacity(0.2)
+                        }
+                        .padding(50)
+                        .textSelection(.enabled)
+                    }
+                    Spacer().frame(height: 200)
+
                 }.padding(.trailing, 200)
                 
             }.padding(.trailing, -200)
             VStack {
-                if appVM.theaterMode {
+                if appVM.theaterMode && appVM.streamPlayer != nil{
                     ZStack {
                         VisualEffectView(material: .hudWindow, blendingMode: .withinWindow)
-                        WebView(url: URL(string: "https://www.twitch.tv/popout/\(appVM.streamPlayer!.channel.userData.userLoginName)/chat"))
+                        CustomWebView(data: WebViewData(url: URL(string: "https://www.twitch.tv/popout/\(appVM.streamPlayer!.channel.userData.userLoginName)/chat")))
+                        
+//                        ChatView(channelName: appVM.streamPlayer!.channel.userData.userLoginName)
                     }.cornerRadius(10)
                         .shadow(radius: 3)
                         .frame(width: 350)
@@ -282,6 +342,23 @@ struct StreamView: View {
                         .padding(.trailing, 20)
                 }
             }
+        }.onDisappear() {
+            print("disappear")
+            if appVM.streamPlayer?.refreshTimer != nil {
+                appVM.streamPlayer!.refreshTimer!.invalidate()
+            }
+        }
+    }
+    
+    private func readFileBy(name: String, type: String) -> String {
+        guard let path = Bundle.main.path(forResource: name, ofType: type) else {
+            return "Failed to find path"
+        }
+        
+        do {
+            return try String(contentsOfFile: path, encoding: .utf8)
+        } catch {
+            return "Unkown Error"
         }
     }
 }

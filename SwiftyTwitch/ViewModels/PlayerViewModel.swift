@@ -25,8 +25,12 @@ class PlayerViewModel: ObservableObject {
     @Published var selectedStream: StreamQuality? = nil
     
     @Published var player: AVPlayer? = nil
+    @Published var dontUpdateStreams: Bool = false
+    @AppStorage(StorageStrings.lastSelectedQuality) var lastSelectedQuality: StreamQuality = .q_720p60
     
     @Published var isPlaying: Bool = false
+    
+    @Published var automaticPlay: Bool = true
     
     var refreshTimer: Timer? = nil
     
@@ -38,7 +42,20 @@ class PlayerViewModel: ObservableObject {
     }
     
     init(channel: Follow) {
+        print("init player")
         self.channel = channel
+        self.refreshTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval(60), repeats: true, block: { _ in
+            self.refreshData()
+        })
+        Task {
+            loadPlayer()
+            
+        }
+    }
+    init(channel: Follow, autoPlay: Bool) {
+        print("init player")
+        self.channel = channel
+        self.automaticPlay = autoPlay
         self.refreshTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval(60), repeats: true, block: { _ in
             self.refreshData()
         })
@@ -53,6 +70,11 @@ class PlayerViewModel: ObservableObject {
 
 extension PlayerViewModel {
     func refreshData() {
+        if AppViewModel.shared.streamPlayer?.channel.userData.userLoginName != self.channel.userData.userLoginName {
+            self.refreshTimer?.invalidate()
+            return
+        }
+        print("refreshing for: \(self.channel.userData.userDisplayName)")
         Twitch.Streams.getStreams(first: 1, userIds: [self.channel.userData.userId]) { result in
             switch result {
             case .success(let getStreamData):
@@ -97,21 +119,27 @@ extension PlayerViewModel {
 extension PlayerViewModel {
     func loadPlayerItem() {
         if !self.streams.isEmpty {
-            self.selectedStream = self.streams.keys.filter( {$0 != .audio_only && $0 != .q_160p && $0 != .q_360p} ).first!
-            var item = AVPlayerItem(url: self.streams[selectedStream!]!)
+            if (self.streams[self.lastSelectedQuality] != nil) {
+                self.selectedStream = self.lastSelectedQuality
+            } else {
+                self.selectedStream = self.streams.keys.filter( {$0 != .audio_only && $0 != .q_160p && $0 != .q_360p} ).first!
+            }
+            let item = AVPlayerItem(url: self.streams[selectedStream!]!)
             self.player = AVPlayer(playerItem: item)
 //            self.player = AVPlayer(url: self.streams[selectedStream!]!)
 //            self.player?.seek(to: CMTimeMakeWithSeconds(15.169, preferredTimescale: 60000))
-            self.player?.play()
-            self.isPlaying = true
+            if self.automaticPlay {
+                self.player?.play()
+                self.isPlaying = true
+            }
             setupNowPlaying()
             self.nowPlayable.handleNowPlayableSessionStart()
         }
     }
     func changeQuality() {
         if !self.streams.isEmpty {
-            print("changing...")
             self.player?.replaceCurrentItem(with: AVPlayerItem(url: self.streams[selectedStream!]!))
+            self.lastSelectedQuality = selectedStream!
         }
     }
     func getPlayerView() -> AVPlayerView {
@@ -145,7 +173,7 @@ extension PlayerViewModel {
         }
     }
     func setNowPlayingInfo(with artwork: MPMediaItemArtwork) {
-        var nowPlayingInfo = NowPlayableStaticMetadata(assetURL: URL(string: "https://twitch.tv/\(self.channel.userData.userLoginName)")!,
+        let nowPlayingInfo = NowPlayableStaticMetadata(assetURL: URL(string: "https://twitch.tv/\(self.channel.userData.userLoginName)")!,
                                                        mediaType: .video,
                                                        isLiveStream: true,
                                                        title: self.channel.streamData!.title,
@@ -193,22 +221,26 @@ extension PlayerViewModel {
 
 extension PlayerViewModel {
     func loadPlayer() {
+        print("loading.")
         self.status = .none
         let request = AF.request((Constants.apiURL+"/twitch/\(self.channel.userData.userLoginName)"), method: .get)
         request.responseData() { response in
+            print("resoponse.")
             if response.data != nil {
                 do {
                     let json = try JSON(data: response.data!)
                     var answer: [StreamQuality:URL] = [:]
-                    if json.count > 1 {
-                        for quality in json.dictionaryValue.keys {
-                            answer[StreamQuality(rawValue: quality)!] = URL(string: json[quality].stringValue)!
+                    if !self.dontUpdateStreams {
+                        if json.count > 1 {
+                            for quality in json.dictionaryValue.keys {
+                                answer[StreamQuality(rawValue: quality)!] = URL(string: json[quality].stringValue)!
+                            }
+                            self.streams = answer
+                            self.loadPlayerItem()
+                        } else {
+                            print("error streams: no streams")
+                            self.status = .error
                         }
-                        self.streams = answer
-                        self.loadPlayerItem()
-                    } else {
-                        print("error streams: no streams")
-                        self.status = .error
                     }
                     
                 } catch {
@@ -221,9 +253,9 @@ extension PlayerViewModel {
 }
 
 extension PlayerViewModel {
-    //TODO: add tags - need to do a custom implementation in the 
+    //TODO: add tags - need to do a custom implementation in the package
     func loadTags() {
-        var parameters: String
+        //var parameters: String
         let request = AF.request("https://api.twitch.tv/helix/tags/streams", method: .get, parameters: ["url":""])
         request.responseData() { response in
             if response.data != nil {
@@ -239,7 +271,6 @@ extension PlayerViewModel {
                 } catch {print("error streams")}
             }
         }
-        TwitchTokenManager.shared.accessToken
         
     }
 }

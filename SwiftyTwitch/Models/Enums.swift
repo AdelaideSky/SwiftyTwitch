@@ -89,3 +89,9 @@ extension StreamQuality {
         }
     }
 }
+
+enum ChatPanelConfig: String {
+    case right
+    case left
+    case none
+}

@@ -41,6 +41,9 @@ struct StreamLinkView: View {
             .onAppear() {
                 appVM.playStream(streamer: channel)
             }
+            .onDisappear() {
+                appVM.stopPlaying()
+            }
     }
 }
 
